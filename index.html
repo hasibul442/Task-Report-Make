@@ -19,8 +19,8 @@
             <div class="col-sm-5">
                 <div class="card shadow-lg">
                     <div class="card-body">
-                        <table class="table table-sm table-borderless mb-3" id="table_field">
-                            <thead>
+                        <div class="table table-sm table-borderless mb-3" id="table_field">
+                            <!-- <thead>
                                 <tr>
                                     <th>Task Name</th>
                                     <th>Hour</th>
@@ -29,20 +29,22 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
+                                    <td> -->
+                                        <label for="">Task Name</label>
                                         <input type="text" class="form-control taskname" name="taskname">
-                                    </td>
-                                    <td>
+                                        <!-- </td> -->
+                                        <!-- <td> -->
+                                        <label for="">Man Hour</label>
                                         <input type="text" class="form-control manhour" name="manhour">
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-sm" style="background-color: #3a86ff;color:#FFF" id="add1">
-                                            <i class="fas fa-plus"></i>
+                                    <!-- </td>
+                                    <td> -->
+                                        <button type="button" class="btn btn-sm mt-2" style="background-color: #3a86ff;color:#FFF" id="add1">
+                                            Insert Data
                                         </button>
-                                    </td>
+                                    <!-- </td>
                                 </tr>
-                            </tbody>
-                        </table>
+                            </tbody> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,7 +63,7 @@
             <div class="col-sm-1">
                 <div class="card shadow-lg">
                     <div class="card-body">
-                        <h5>Total Hour <span id="total-hour"></span></h5>
+                        <h5>Total Hour <span class="total-hour">0</span></h5>
                     </div>
                 </div>
             </div>
@@ -85,6 +87,7 @@
     <script>
         $(document).ready(function () {
             var taskCount = 0;
+            var totalmanhours = 0;
 
             $("#add1").click(function () {
                 var taskName = $("input[name='taskname']").val();
@@ -92,11 +95,12 @@
 
                 if (taskName && manHour) {
                     taskCount++;
+                    totalmanhours += parseInt(manHour);
                     var taskHtml = `
                                     <li>${taskName}
-                                <ul>
+                                <ul class="datalist">
                                     <li>Backlog Ticket: N/A</li>
-                                    <li>Estimated total hours: ${manHour}</li>
+                                    <li class="man">Estimated total hours: ${manHour}</li>
                                     <li>Previously done: 0%</li>
                                     <li>Today will be done: 100%</li>
                                     <li>Today's progress: -</li>
@@ -110,6 +114,7 @@
                     `;
                     $("#taskDetails").append(taskHtml);
                     $(".total").text(taskCount);
+                    $(".total-hour").text(totalmanhours);
 
                     $("input[name='taskname']").val("");
                     $("input[name='manhour']").val("");
@@ -117,9 +122,12 @@
             });
 
             $("#taskDetails").on("click", ".remove-task", function () {
+                var manHour = parseInt($(this).closest("li").find(".man").text().split(": ")[1]);
+                totalmanhours -= manHour;
                 $(this).closest("li").remove();
                 taskCount--;
-                $(".total").text(taskCount);
+    $(".total").text(taskCount);
+    $(".total-hour").text(totalmanhours);
             });
         });
     </script>
