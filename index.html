@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,65 +10,91 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 </head>
+
 <body>
     <h1 class="text-center">Hello, Task World!</h1>
- 
+
     <section class="container-fluid mt-5">
 
-        <div class="row">
-            <div class="col-sm-5">
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <div class="table table-sm table-borderless mb-3" id="table_field">
-                            <!-- <thead>
-                                <tr>
-                                    <th>Task Name</th>
-                                    <th>Hour</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td> -->
-                                        <label for="">Task Name</label>
-                                        <input type="text" class="form-control taskname" name="taskname">
-                                        <!-- </td> -->
-                                        <!-- <td> -->
-                                        <label for="">Man Hour</label>
-                                        <input type="text" class="form-control manhour" name="manhour">
-                                    <!-- </td>
-                                    <td> -->
-                                        <button type="button" class="btn btn-sm mt-2" style="background-color: #3a86ff;color:#FFF" id="add1">
-                                            Insert Data
-                                        </button>
-                                    <!-- </td>
-                                </tr>
-                            </tbody> -->
+        <div>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                        aria-selected="true">Task Make</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                        aria-selected="false">Task Progress Update</button>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
+                tabindex="0">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="card shadow-lg">
+                            <div class="card-body">
+                                <div class="table table-sm table-borderless mb-3" id="table_field">
+                                    <label for="">Task Name</label>
+                                    <input type="text" class="form-control taskname" name="taskname">
+                                    <label for="">Man Hour</label>
+                                    <input type="text" class="form-control manhour" name="manhour">
+                                    <button type="button" class="btn btn-sm mt-2"
+                                        style="background-color: #3a86ff;color:#FFF" id="add1">
+                                        Insert Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card shadow-lg">
+                            <div class="card-body">
+                                <h6>@Mohammad Hasibul Hasan (Total Task: <span class="total">0</span>)</h6>
+                                <div>
+                                    <ol id="taskDetails">
+
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="card shadow-lg">
+                            <div class="card-body">
+                                <h5>Total Hour <span class="total-hour">0</span></h5>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <h6>@Mohammad Hasibul Hasan (Total Task: <span class="total">0</span>)</h6>
-                        <div>
-                            <ol id="taskDetails">
-                                
-                            </ol>
-                        </div>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
+                tabindex="0">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <textarea id="summernote" name="listed-data" class="listed-data"></textarea>
+                        <button type="button" class="btn btn-sm mt-2" style="background-color: #3a86ff;color:#FFF"
+                            id="update_list">
+                            Update Data
+                        </button>
                     </div>
-                </div>
-            </div>
-            <div class="col-sm-1">
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <h5>Total Hour <span class="total-hour">0</span></h5>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="showed_data" id="showed_data"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </section>
 
 
@@ -84,6 +111,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
         integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
         $(document).ready(function () {
             var taskCount = 0;
@@ -126,10 +154,46 @@
                 totalmanhours -= manHour;
                 $(this).closest("li").remove();
                 taskCount--;
-    $(".total").text(taskCount);
-    $(".total-hour").text(totalmanhours);
+                $(".total").text(taskCount);
+                $(".total-hour").text(totalmanhours);
             });
         });
     </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#summernote').summernote({
+                placeholder: 'Enter Task List',
+                tabsize: 2,
+                height: 400
+            });
+
+            $("#update_list").click(function () {
+                var updated_list = $("#summernote").val();
+                // console.log(updated_list);
+                var tempElement = document.createElement("div");
+                tempElement.innerHTML = updated_list;
+                // console.log(tempElement);
+
+                var listItems = tempElement.querySelectorAll("ol li");
+
+                for (var i = 0; i < listItems.length; i++) {
+                    var sublistItems = listItems[i].querySelectorAll("ul li"); // Get sublist items under current ol li
+                    for (var j = 0; j < sublistItems.length; j++) {
+                        // Access and manipulate sublist items using sublistItems[j]
+                        var sublistItemText = sublistItems[j].innerText; // Get the text content of the sublist item
+                        console.log("Sublist Item Text:", sublistItemText);
+                    }
+                }
+
+                $("#showed_data").empty();
+                $("#showed_data").append(updated_list);
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </body>
+<!-- console.log(listItems[i]);
+    // Get the estimated total hours and today will be done values
+    var estimatedTotalHours = listItems[i].querySelectorAll("ul li"); -->
 </html>
