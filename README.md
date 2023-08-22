@@ -1,3 +1,3 @@
 # Task-Report-Make
 URL:
-https://github.com/hasibul442/Task-Report-Make.git
+https://hasibul442.github.io/Task-Report-Make/
