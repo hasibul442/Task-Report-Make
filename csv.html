@@ -1,0 +1,118 @@
+<!-- CSS -->
+<style type="text/css">
+    table th, table td{
+    padding: 5px;
+}
+</style>
+
+<div>
+
+    <div>
+         <input type="text" name="name" id="name" placeholder="Name"> <br><br>
+         <input type="text" name="date" id="date" placeholder="date"> <br><br>
+         <input type="file" name="file" id="file" accept=".csv" > <br><br>
+         <input type="button" id="btnsubmit" value="Submit" onclick="readCSVFile();" >
+    </div>
+    <div class="col-sm-6">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <h6>@<span id="emp-name"></span> (Total Task: <span class="total">0</span>)</h6>
+                <div>
+                    <ol id="taskDetails">
+                        
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
+integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    function readCSVFile(){
+        var files = document.querySelector('#file').files;
+
+        var name = document.getElementById("name").value;  
+        var date = document.getElementById("date").value;  
+
+        var taskCount = 0;
+
+        if(files.length > 0 ){
+
+            // Selected file
+            var file = files[0];
+            var taskHtml = '';
+
+            // FileReader Object
+            var reader = new FileReader();
+
+            // Read file as string 
+            reader.readAsText(file);
+
+            // Load event
+            reader.onload = function(event) {
+
+                // Read file data
+                var csvdata = event.target.result;
+
+                // Split by line break to gets rows Array
+                var rowData = csvdata.split('\n');
+
+                // Loop on the row Array (change row=0 if you also want to read 1st row)
+                for (var row = 1; row < rowData.length; row++) {
+
+                        // Split by comma (,) to get column Array
+                        rowColData = rowData[row].split(',');
+
+                        // Loop on the row column Array
+                        for (var col = 0; col < rowColData.length; col++) {
+
+                            if(rowColData[col] == name)
+                            {
+                                if(rowColData[col+1] == date)
+                                {
+                                    taskCount++;
+                                    taskHtml += `
+                                                    <li>${rowColData[col-1].replace('└', '')}
+                                                        <ul>
+                                                            <li>Backlog Ticket: N/A</li>
+                                                            <li>Estimated total hours: <sapn id="man-hour" value =${rowColData[col+3]}>${rowColData[col+3]}</span></li>
+                                                            <li>Previously done: 0%</li>
+                                                            <li>Today will be done: 100%</li>
+                                                            <li>Today's progress: -</li>
+                                                            <li>Actual hours: -</li>
+                                                        </ul>
+                                                    </li>
+                                                
+                                    `;
+                                    console.log(taskHtml);
+                                    // console.log("Task: "+rowColData[col-1]);
+                                    // console.log("Hour: "+rowColData[col+3]);
+                                }
+                            }
+
+                        }
+
+                }
+                $("#taskDetails").append(taskHtml);
+                $("#emp-name").append(name);
+                $(".total").text(taskCount);
+            };
+
+            
+
+        }else{
+            alert("Please select a file.");
+        }
+
+    }
+</script>
