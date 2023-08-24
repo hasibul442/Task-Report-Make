@@ -22,20 +22,21 @@
 
         <div>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
-                        data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                        aria-selected="true">Task Make</button>
-                </li>
-                <li class="nav-item" role="presentation">
+                
+                <li class="nav-item active" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                        aria-selected="false">Task Progress Update</button>
+                        aria-selected="false">Auto Task Report Genarat</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                        aria-selected="true">Manual Task Report Make</button>
                 </li>
             </ul>
         </div>
         <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
+            <div class="tab-pane fade show" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
                 tabindex="0">
                 <div class="row">
                     <div class="col-sm-5">
@@ -75,20 +76,28 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
-                tabindex="0">
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel"
+                aria-labelledby="pills-profile-tab" tabindex="0">
                 <div class="row">
                     <div class="col-sm-6">
-                        <textarea id="summernote" name="listed-data" class="listed-data"></textarea>
+                        <input type="text" name="name" id="name" class="form-control" value="Mohammad Hasibul Hasan" placeholder="Name" autocomplete="on"> <br>
+                        <input type="date" name="date" id="date" class="form-control" placeholder="date"> <br>
+                        <input type="file" name="file" id="file" class="form-control" accept=".csv"> <br>
+                        <input type="button" id="btnsubmit" class="form-control btn btn-outline-danger" value="Submit" onclick="readCSVFile();">
                         <button type="button" class="btn btn-sm mt-2" style="background-color: #3a86ff;color:#FFF"
                             id="update_list">
                             Update Data
                         </button>
                     </div>
                     <div class="col-sm-6">
-                        <div class="card">
+                        <div class="card shadow-lg">
                             <div class="card-body">
-                                <div class="showed_data" id="showed_data"></div>
+                                <h6>@<span id="emp-name"></span> (Total Task: <span class="total">0</span>)</h6>
+                                <div>
+                                    <ol id="taskDetails_1">
+                                        
+                                    </ol>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -97,11 +106,6 @@
         </div>
 
     </section>
-
-
-
-
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
         integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
@@ -161,40 +165,92 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function () {
-            $('#summernote').summernote({
-                placeholder: 'Enter Task List',
-                tabsize: 2,
-                height: 400
-            });
+<script>
+    function readCSVFile(){
+        var files = document.querySelector('#file').files;
 
-            $("#update_list").click(function () {
-                var updated_list = $("#summernote").val();
-                // console.log(updated_list);
-                var tempElement = document.createElement("div");
-                tempElement.innerHTML = updated_list;
-                // console.log(tempElement);
+        var name = document.getElementById("name").value;  
+        var date = document.getElementById("date").value;
+        let tempdate = date.split("-");
+        date = tempdate[1]+"/"+tempdate[2];
+        // console.log(tempdate);
 
-                var listItems = tempElement.querySelectorAll("ol li");
+        var taskCount = 0;
 
-                for (var i = 0; i < listItems.length; i++) {
-                    var sublistItems = listItems[i].querySelectorAll("ul li"); // Get sublist items under current ol li
-                    for (var j = 0; j < sublistItems.length; j++) {
-                        // Access and manipulate sublist items using sublistItems[j]
-                        var sublistItemText = sublistItems[j].innerText; // Get the text content of the sublist item
-                        console.log("Sublist Item Text:", sublistItemText);
-                    }
+        if(files.length > 0 ){
+
+            // Selected file
+            var file = files[0];
+            var taskHtml = '';
+
+            // FileReader Object
+            var reader = new FileReader();
+
+            // Read file as string 
+            reader.readAsText(file);
+
+            // Load event
+            reader.onload = function(event) {
+
+                // Read file data
+                var csvdata = event.target.result;
+
+                // Split by line break to gets rows Array
+                var rowData = csvdata.split('\n');
+
+                // Loop on the row Array (change row=0 if you also want to read 1st row)
+                for (var row = 1; row < rowData.length; row++) {
+
+                        // Split by comma (,) to get column Array
+                        rowColData = rowData[row].split(',');
+
+                        // Loop on the row column Array
+                        for (var col = 0; col < rowColData.length; col++) {
+
+                            if(rowColData[col] == name)
+                            {
+                                if(rowColData[col+1] == date)
+                                {
+                                    taskCount++;
+                                    taskHtml += `
+                                                    <li>${rowColData[col-1].replace('└', '')}
+                                                        <ul>
+                                                            <li>Backlog Ticket: N/A</li>
+                                                            <li>Estimated total hours: <sapn id="man-hour" value =${rowColData[col+3]}>${rowColData[col+3]}</span></li>
+                                                            <li>Previously done: 0%</li>
+                                                            <li>Today will be done: 100%</li>
+                                                            <li>Today's progress: -</li>
+                                                            <li>Actual hours: -</li>
+                                                        </ul>
+                                                    </li>
+                                                
+                                    `;
+                                    console.log(taskHtml);
+                                    // console.log("Task: "+rowColData[col-1]);
+                                    // console.log("Hour: "+rowColData[col+3]);
+                                }
+                            }
+
+                        }
+
                 }
+                $("#taskDetails_1").append(taskHtml);
+                $("#emp-name").append(name);
+                $(".total").text(taskCount);
+            };
 
-                $("#showed_data").empty();
-                $("#showed_data").append(updated_list);
-            });
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+            
+
+        }else{
+            alert("Please select a file.");
+        }
+
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </body>
 <!-- console.log(listItems[i]);
     // Get the estimated total hours and today will be done values
     var estimatedTotalHours = listItems[i].querySelectorAll("ul li"); -->
+
 </html>
