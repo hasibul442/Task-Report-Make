@@ -80,7 +80,13 @@
                 aria-labelledby="pills-profile-tab" tabindex="0">
                 <div class="row">
                     <div class="col-sm-6">
-                        <input type="text" name="name" id="name" class="form-control" value="Mohammad Hasibul Hasan" placeholder="Name" autocomplete="on"> <br>
+                        <!-- <input type="text" name="name" id="name" class="form-control" value="Mohammad Hasibul Hasan" placeholder="Name" autocomplete="on"> <br> -->
+                        <select name="name" id="name" class="form-control">
+                            <option value="">Select One</option>
+                            <option value="Mohammad Hasibul Hasan" selected>Mohammad Hasibul Hasan</option>
+                            <option value="Rubyet Hossain">Rubyet Hossain</option>
+                        </select>
+                        <br>
                         <input type="date" name="date" id="date" class="form-control" placeholder="date"> <br>
                         <input type="file" name="file" id="file" class="form-control" accept=".csv"> <br>
                         <input type="button" id="btnsubmit" class="form-control btn btn-outline-danger" value="Submit" onclick="readCSVFile();">
