@@ -18,7 +18,7 @@
 <body>
     <h1 class="text-center">Hello, Task World!</h1>
 
-    <section class="container-fluid mt-5">
+    <section class="container mt-5">
 
         <div>
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -28,10 +28,15 @@
                         data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
                         aria-selected="false">Auto Task Report Genarat</button>
                 </li>
-                <li class="nav-item active" role="presentation">
+                <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill"
                         data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
                         aria-selected="true">Manual Task Report Make</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-taskUpdate-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-taskUpdate" type="button" role="tab" aria-controls="pills-taskUpdate"
+                        aria-selected="true">Bulk Task Update</button>
                 </li>
             </ul>
         </div>
@@ -39,7 +44,7 @@
             <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
                 tabindex="0">
                 <div class="row">
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <div class="card shadow-lg">
                             <div class="card-body">
                                 <div class="table table-sm table-borderless mb-3" id="table_field">
@@ -54,8 +59,15 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="card shadow-lg mt-2">
+                            <div class="card-body">
+                                <h5>Total Hour <span class="total-hour">0</span></h5>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-6">
+                        
                         <div class="card shadow-lg">
                             <div class="card-body">
                                 <h6>@Mohammad Hasibul Hasan (Total Task: <span class="total">0</span>)</h6>
@@ -64,13 +76,6 @@
 
                                     </ol>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-1">
-                        <div class="card shadow-lg">
-                            <div class="card-body">
-                                <h5>Total Hour <span class="total-hour">0</span></h5>
                             </div>
                         </div>
                     </div>
@@ -100,6 +105,23 @@
                                         
                                     </ol>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-taskUpdate" role="tabpanel"
+                aria-labelledby="pills-taskUpdate-tab" tabindex="0">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="summernote"></div> <br>
+                        <button type="button" class="btn btn-outline-primary w-100" id="update_list">Update Report</button>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div id="output"></div>
                             </div>
                         </div>
                     </div>
@@ -249,6 +271,43 @@
         }
 
     }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            placeholder: 'Enter Task List',
+            tabsize: 2,
+            height: 400
+        });
+
+        $("#update_list").click(function () {
+            var updated_list = $("#summernote").summernote('code');
+
+            var sourceLiElement = $('ul li:contains("Today will be done:")');
+
+            var targetLiElement = $('ul li:contains("Today\'s progress:")');
+
+            sourceLiElement.each(function( index ) {
+                var dynamicValue = $(this).text().split(': ')[1];
+                $(targetLiElement[index]).html("<strong>Today's progress: " + dynamicValue+"</strong>");
+            })
+
+
+            var sourceLiElement = $('ul li:contains("Estimated")');
+
+            var targetLiElement = $('ul li:contains("Actual")');
+
+            sourceLiElement.each(function( index ) {
+                var dynamicValue = $(this).text().split(': ')[1];
+                $(targetLiElement[index]).html("<strong>Actual hours: " + dynamicValue+"</strong>");
+            })
+
+            var updated_list2 = $("#summernote").summernote('code');
+            $("#output").html(updated_list2);
+
+        });
+    });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </body>
