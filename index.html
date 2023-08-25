@@ -100,11 +100,13 @@
                     <div class="col-sm-6">
                         <div class="card shadow-lg">
                             <div class="card-body">
-                                <h6>@<span id="emp-name"></span> (Total Task: <span class="total">0</span>)</h6>
-                                <div>
-                                    <ol id="taskDetails_1">
-                                        
-                                    </ol>
+                                <button type="button" class="btn btn-outline-danger w-100" id="copy2">Copy</button>
+                                <div id="task-content">
+                                    <h6>@<span id="emp-name"></span> (Total Task: <span class="total">0</span>)</h6>
+                                    <div>
+                                        <ol id="taskDetails_1">
+                                        </ol>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -121,7 +123,7 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body">
-
+                                <button type="button" class="btn btn-outline-danger w-100" id="copy">Copy</button>
                                 <div id="output"></div>
                             </div>
                         </div>
@@ -271,6 +273,27 @@
             alert("Please select a file.");
         }
 
+        $('#copy2').click(function() {
+            // Get the HTML content of the element with ID 'output'
+            var outputHtml = $('#task-content').html();
+            
+            // Create a temporary textarea element to hold the HTML content
+            var tempTextarea = $('<textarea>');
+            tempTextarea.val(outputHtml);
+            
+            // Append the textarea to the body and select its content
+            $('body').append(tempTextarea);
+            tempTextarea.select();
+            
+            // Copy the selected content to the clipboard
+            document.execCommand('copy');
+            
+            // Remove the temporary textarea
+            tempTextarea.remove();
+            
+            alert('Content copied to clipboard!');
+        });
+
     }
 </script>
 
@@ -307,6 +330,27 @@
             var updated_list2 = $("#summernote").summernote('code');
             $("#output").html(updated_list2);
 
+        });
+
+        $('#copy').click(function() {
+            // Get the HTML content of the element with ID 'output'
+            var outputHtml = $('#output').html();
+            
+            // Create a temporary textarea element to hold the HTML content
+            var tempTextarea = $('<textarea>');
+            tempTextarea.val(outputHtml);
+            
+            // Append the textarea to the body and select its content
+            $('body').append(tempTextarea);
+            tempTextarea.select();
+            
+            // Copy the selected content to the clipboard
+            document.execCommand('copy');
+            
+            // Remove the temporary textarea
+            tempTextarea.remove();
+            
+            alert('Content copied to clipboard!');
         });
     });
 </script>
