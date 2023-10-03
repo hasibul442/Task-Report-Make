@@ -86,11 +86,11 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <!-- <input type="text" name="name" id="name" class="form-control" value="Mohammad Hasibul Hasan" placeholder="Name" autocomplete="on"> <br> -->
-                        <select name="name" id="name" class="form-select form-control">
+                        <select name="name" id="name" class="form-select form-control name">
                             <option value="">Select One</option>
-                            <option value="Mohammad Hasibul Hasan" selected>Mohammad Hasibul Hasan</option>
+                            <!-- <option value="Mohammad Hasibul Hasan">Mohammad Hasibul Hasan</option>
                             <option value="Rubyet Hossain">Rubyet Hossain</option>
-                            <option value="Jahidul Islam">Jahidul Islam</option>
+                            <option value="Jahidul Islam">Jahidul Islam</option> -->
                         </select>
                         <br>
                         <input type="date" name="date" id="date" class="form-control" placeholder="date"> <br>
@@ -143,6 +143,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
         integrity="sha512-uKQ39gEGiyUJl4AI6L+ekBdGKpGw4xJ55+xyJG7YFlJokPNYegn9KwQ3P8A7aFQAUtUsAQHep+d/lrGqrbPIDQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+         $(document).ready(function() {
+        // Load the JSON file
+        $.getJSON("employee.json", function(data) {
+            // Loop through each employee object in the JSON data
+            $.each(data, function(index, employee) {
+                // Add an option element to the select element for each employee
+                $(".name").append("<option value='" + employee.name + "'>" + employee.name + "</option>");
+            });
+        });
+    });
+    </script>
 
     <script>
         $(document).ready(function () {
