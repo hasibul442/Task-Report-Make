@@ -6,6 +6,7 @@ import Auto from './Pages/Auto'
 import Manual from './Pages/Manual'
 import ListUpdate from './Pages/ListUpdate'
 import PercentageCalculation from './Pages/PercentageCalculation'
+import Employee from './Pages/Employee'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -21,6 +22,7 @@ function App() {
               <Route path='/manual-task-report' element={<Manual />} />
               <Route path='/task-list-update' element={<ListUpdate />} />
               <Route path='/percentage' element={<PercentageCalculation />} />
+              <Route path='/employee' element={<Employee />} />
             </Routes>
           </Router>
       </main>
