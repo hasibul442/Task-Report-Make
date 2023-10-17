@@ -62,7 +62,7 @@ function Manual() {
             <form>
               <div className="mb-3">
                 <label htmlFor="taskname" className="form-label">Task Name</label>
-                <input type="text" className="form-control" id="taskname" value={taskName} onChange={handleTaskNameChange} />
+                <input type="text" className="form-control" id="taskname" placeholder='Enter Task Name' value={taskName} onChange={handleTaskNameChange} />
               </div>
               <div className="mb-3">
                 <label htmlFor="manhour" className="form-label">Man Hour</label>

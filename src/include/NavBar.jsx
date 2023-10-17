@@ -1,7 +1,9 @@
 import React from "react";
 import "./navbar.css"
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 function NavBar() {
+	const location = useLocation();
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -13,10 +15,12 @@ function NavBar() {
 
 	      <div className="collapse navbar-collapse" id="ftco-nav">
 	        <ul className="navbar-nav ml-auto">
-	        	<li className="nav-item active"><Link to="/auto-task-report" className="nav-link">Auto Task Report</Link></li>
-	        	<li className="nav-item"><Link to="/manual-task-report" className="nav-link">Manual Task Report</Link></li>
-	        	<li className="nav-item"><Link to="/task-list-update" className="nav-link">Task List Update</Link></li>
-	        	<li className="nav-item"><Link to="/percentage" className="nav-link">Percentage Calculation</Link></li>
+	        	<li className="nav-item">
+					<Link to="/auto-task-report" className={`nav-link ${location.pathname === "/auto-task-report" ? "active" : ""}`}>Auto Task Report</Link>
+				</li>
+	        	<li className="nav-item"><Link to="/manual-task-report" className={`nav-link ${location.pathname === "/manual-task-report" ? "active" : ""}`}>Manual Task Report</Link></li>
+	        	<li className="nav-item"><Link to="/task-list-update" className={`nav-link ${location.pathname === "/task-list-update" ? "active" : ""}`}>Task List Update</Link></li>
+	        	<li className="nav-item"><Link to="/percentage" className={`nav-link ${location.pathname === "/percentage" ? "active" : ""}`}>Percentage Calculation</Link></li>
 	        </ul>
 	      </div>
 	    </div>

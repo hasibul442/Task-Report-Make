@@ -142,3 +142,9 @@
 .ftco-navbar-light .navbar-toggler:focus {
   outline: none !important;
 }
+
+.nav-link.active{
+  color: #000 !important;
+  background-color: chartreuse !important;
+  font-weight: bold !important;
+}
