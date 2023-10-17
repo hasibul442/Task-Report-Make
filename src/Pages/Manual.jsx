@@ -35,14 +35,6 @@ function Manual() {
   //Add Task will be added to the just an arry
   const [tasks, setTasks] = useState([]);
 
-  // const handleTaskNameChange = (event) => {
-  //   setTask(event.target.value);
-  // };
-
-  // const handleManHourChange = (event) => {
-  //   setHour(event.target.value);
-  // };
-
   const addTask = (e) => {
     e.preventDefault();
     if (taskName && hour) {
@@ -140,7 +132,7 @@ function Manual() {
                   className="btn btn-primary"
                   onClick={addTask}
                 >
-                  Submit
+                 Submit
                 </button>
               </form>
             </div>

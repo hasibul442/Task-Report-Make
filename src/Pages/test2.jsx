@@ -6,13 +6,22 @@ function Auto() {
   const [empdata, setEmpdata] = useState([]);
   const [taskCount, setTaskCount] = useState(0);
   const [taskHtml, setTaskHtml] = useState('');
+  const [name, setName] = useState('');
+  const [date, setDate] = useState('');
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleDateChange = (event) => {
+    setDate(event.target.value);
+  };
 
   const readCSVFile = () => {
     const files = document.querySelector('#file').files;
-    const name = document.getElementById('name').value;
-    const date = document.getElementById('date').value;
+
     let tempdate = date.split('-');
-    date = tempdate[1] + '/' + tempdate[2];
+    const formattedDate = tempdate[1] + '/' + tempdate[2];
 
     if (files.length > 0) {
       const file = files[0];
@@ -24,24 +33,30 @@ function Auto() {
         const csvdata = event.target.result;
         const rowData = csvdata.split('\n');
 
+        let updatedTaskHtml = ''; // Create a temporary variable
+
         for (let row = 1; row < rowData.length; row++) {
           const rowColData = rowData[row].split(',');
 
           for (let col = 0; col < rowColData.length; col++) {
-            if (rowColData[col] === name && rowColData[col + 1] === date) {
+            if (rowColData[col] === name && rowColData[col + 1] === formattedDate) {
               setTaskCount(taskCount + 1);
-              setTaskHtml(
-                taskHtml +
-                  `<li>${rowColData[col - 1].replace(
-                    '└',
-                    ''
-                  )}<ul><li>Backlog Ticket: N/A</li><li>Estimated total hours: <span id="man-hour" value=${rowColData[col + 3]}>${rowColData[col + 3]}</span></li><li>Previously done: 0%</li><li>Today will be done: 100%</li><li>Today's progress: -</li><li>Actual hours: -</li></ul></li>`
-              );
+              updatedTaskHtml +=
+                `<li>${rowColData[col - 1].replace(
+                  '└',
+                  ''
+                )}<ul><li>Backlog Ticket: N/A</li><li>Estimated total hours: <span id="man-hour" value=${rowColData[col + 3]}>${rowColData[col + 3]}</span></li><li>Previously done: 0%</li><li>Today will be done: 100%</li><li>Today's progress: -</li><li>Actual hours: -</ul></li>`;
+
+              // Remove the setting of taskHtml from here
             }
           }
         }
 
-        document.querySelector('#taskDetails_1').innerHTML = taskHtml;
+        // Set the taskHtml after processing the file
+        setTaskHtml(updatedTaskHtml);
+
+        // Rest of your code remains the same
+        document.querySelector('#taskDetails_1').innerHTML = updatedTaskHtml;
         document.querySelector('#emp-name').innerHTML = name;
         document.querySelector('.total').innerHTML = taskCount;
       };
@@ -78,11 +93,11 @@ function Auto() {
               </div>
               <div>
                 <label htmlFor="name">Employee Name:</label>
-                <input type="text" id="name" name="name" />
+                <input type="text" id="name" name="name" value={name} onChange={handleNameChange} />
               </div>
               <div>
                 <label htmlFor="date">Date:</label>
-                <input type="date" id="date" name="date" />
+                <input type="date" id="date" name="date" value={date} onChange={handleDateChange} />
               </div>
               <button type="button" onClick={readCSVFile}>
                 Read File
@@ -103,3 +118,5 @@ function Auto() {
     </>
   );
 }
+
+export default Auto;
