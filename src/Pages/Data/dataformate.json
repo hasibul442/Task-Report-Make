@@ -1,0 +1,41 @@
+{
+    "project_name" : "Paypal",
+    "milestone" : "2023/8/8",
+    "start_date" : "2023/8/8",
+    "investigation_date" : "2023/8/8",
+    "system_design_date" : "2023/8/8",
+    "wbs_date" : "2023/8/8",
+    "release_date" : "2023/8/8",
+    "data" : {
+        "Investigation" :{
+            "total_task" : "10",
+            "complete_task" : "5",
+            "incomplete_task" : "5",
+            "progress" : "50%"
+        },
+        "System_Design" :{
+            "total_task" : "10",
+            "complete_task" : "5",
+            "incomplete_task" : "5",
+            "progress" : "50%"
+        },
+        "WBS" :{
+            "total_task" : "10",
+            "complete_task" : "5",
+            "incomplete_task" : "5",
+            "progress" : "50%"
+        },
+        "Enhanced_System_Design" :{
+            "total_task" : "10",
+            "complete_task" : "5",
+            "incomplete_task" : "5",
+            "progress" : "50%"
+        },
+        "main" :{
+            "total_task" : "10",
+            "complete_task" : "5",
+            "incomplete_task" : "5",
+            "progress" : "50%"
+        }
+    }
+}
