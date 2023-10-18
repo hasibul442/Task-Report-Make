@@ -152,10 +152,6 @@ function Auto() {
           <div className="col-sm-6">
             <div className="card">
               <div className="card-body">
-                {/* <h6>
-                  @ <b>(Total Task: )</b>
-                </h6> */}
-
                 <h2>Task Details</h2>
                 <h6>
                   @{name} (Total Tasks: {taskCount})
@@ -163,7 +159,7 @@ function Auto() {
                 <p>
                   
                 </p>
-                <ul id="taskDetails_1"></ul>
+                <ol id="taskDetails_1" className="taskDetails_1"></ol>
               </div>
             </div>
           </div>
