@@ -8,6 +8,7 @@ import ListUpdate from './Pages/ListUpdate'
 import PercentageCalculation from './Pages/PercentageCalculation'
 import Employee from './Pages/Employee'
 import ProjectList from './Pages/Project/ProjectList'
+import ReportConfig from './Pages/Project/ReportConfig'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -27,6 +28,8 @@ function App() {
 
               <Route path='/employee' element={<Employee />} />
               <Route path='/project' element={<ProjectList />} />
+              <Route path='/report_config' element={<ReportConfig />} />
+              
             </Routes>
           </Router>
       </main>
