@@ -30,6 +30,7 @@ function Auto() {
   }, []);
 
   const readCSVFile = () => {
+    let count = 0;
     const files = document.querySelector("#file").files;
     let tempdate = date.split("-");
     const formattedDate = tempdate[1] + "/" + tempdate[2];
@@ -50,11 +51,12 @@ function Auto() {
           const rowColData = rowData[row].split(",");
 
           for (let col = 0; col < rowColData.length; col++) {
+            
             if (
               rowColData[col] === name &&
               rowColData[col + 1] === formattedDate
             ) {
-              setTaskCount(taskCount + 1);
+              count = count+1;
               updatedTaskHtml += `<li>${rowColData[col - 1].replace(
                 "└",
                 ""
@@ -71,7 +73,7 @@ function Auto() {
             }
           }
         }
-
+        setTaskCount(count);
         setTaskHtml(updatedTaskHtml);
         document.querySelector("#taskDetails_1").innerHTML = updatedTaskHtml;
       };

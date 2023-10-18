@@ -16,7 +16,7 @@ function NavBar() {
 	      <div className="collapse navbar-collapse" id="ftco-nav">
 	        <ul className="navbar-nav ml-auto">
 	        	<li className="nav-item">
-					<Link to="/auto-task-report" className={`nav-link ${location.pathname === "/auto-task-report" ? "active" : ""}`}>Auto Task Report</Link>
+					<Link to="/auto-task-report" className={`nav-link ${location.pathname === "/auto-task-report" ? "active" : ""} ${location.pathname === "/" ? "active" : ""}`}>Auto Task Report</Link>
 				</li>
 	        	<li className="nav-item"><Link to="/manual-task-report" className={`nav-link ${location.pathname === "/manual-task-report" ? "active" : ""}`}>Manual Task Report</Link></li>
 	        	<li className="nav-item"><Link to="/task-list-update" className={`nav-link ${location.pathname === "/task-list-update" ? "active" : ""}`}>Task List Update</Link></li>
