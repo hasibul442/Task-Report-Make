@@ -163,17 +163,18 @@ function ReportConfig() {
                             <a href="" className="">
                               Add Sub Category
                             </a>
-                            <div>
+                            <div className="d-flex justify-content-right">
                               <input
                                 type="text"
-                                className="form-control form-control-sm"
+                                className="form-control form-control-sm w-75"
                                 onChange={(e) => {
                                   setMilestone(e.target.value);
                                 }}
                               />
+                              
                               <input
                                 type="text"
-                                className="form-control form-control-sm"
+                                className="form-control form-control-sm w-75"
                                 onChange={(e) => {
                                   setMilestone(e.target.value);
                                 }}
