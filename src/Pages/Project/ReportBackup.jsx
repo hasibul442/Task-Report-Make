@@ -37,39 +37,79 @@ function ReportConfig() {
     getProject();
   }, []);
 
-  const [serviceList, setServiceList] = useState([{ service: "", total_task: "" }]);
+  const [serviceList, setServiceList] = useState([{ service: "" }]);
 
- 
+  const [subserviceList, setSubServiceList] = useState([
+    [{ service1: "", service2: "" }],
+  ]);
 
   const handleFormChange = (index, event) => {
     let values = [...serviceList];
-    values[index][event.target.name] = event.target.value;
-    // values[index][event.target.name] = event.target.value;
+    values[index].service = event.target.value;
     setServiceList(values);
   };
 
   const handleServiceAdd = () => {
-    setServiceList([...serviceList, { service: "", total_task: ""  }]);
+    setServiceList([...serviceList, { service: "" }]);
+    setSubServiceList([...subserviceList, []]);
   };
-
   const handleRemoveService = (index) => {
     const list = [...serviceList];
     list.splice(index, 1);
     setServiceList(list);
   };
 
+  const handleSubServiceAdd = (index) => {
+    const subservices = [...subserviceList];
+    subservices[index].push({ service1: "", service2: "" });
+    setSubServiceList(subservices);
+  };
+
+  const handleRemoveSubService = (index, subIndex) => {
+    const subservices = [...subserviceList];
+    subservices[index].splice(subIndex, 1);
+    setSubServiceList(subservices);
+  };
+  const handleSubServiceChange = (index, subIndex, field, value) => {
+    const subservices = [...subserviceList];
+    subservices[index][subIndex][field] = value;
+    setSubServiceList(subservices);
+  };
+
+  const [fulldata, setFulldata] = useState({});
+
   function allservicesData() {
     const data = {};
     for (const item of serviceList) {
-      data[item.service] = {
-          "Total Tasks": item.total_task,
-          "Completed": 0,
-          "Open / In-progress": 0,
-          "Progress Rate": "0%",
-      };
+      data[item.service] = 
+        subServiceData()
     }
     return data;
   }
+
+  function subServiceData() {
+    const data = {};
+    subserviceList.map((item, index) => {
+      // console.log(item[index+1].service1)
+      // item[index].service1 = item[index].service2;
+      if (item.length > 1){
+        data[item[index+1].service1] = item[index+1].service2;
+      }
+    });
+    return data;
+  }
+
+  const d = {
+    project_name: project,
+          milestone: milestone,
+          start_date: startDate,
+          investigation_date: investigationDate,
+          wbs_date: wbsDate,
+          release_date: releaseDate,
+          data: allservicesData(),
+  }
+ console.log(d);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,7 +127,7 @@ function ReportConfig() {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-  };
+  }
   return (
     <>
       <div className="mt-5">
@@ -208,35 +248,82 @@ function ReportConfig() {
                             <td className="w-100">
                               <input
                                 type="text"
-                                name="service"
+                                name="serviceName"
                                 className="form-control form-control-sm"
                                 value={serviceNameInput.service}
-                                placeholder="Enter Service Name"
                                 onChange={(event) =>
                                   handleFormChange(index, event)
                                 }
                               />
-                              <div className="mt-2">
-                                <div className="row">
-                                  <div className="col-2"></div>
-                                  <div className="col-3">
-                                    <label htmlFor="">
-                                      <b>Total Task</b>
-                                    </label>
-                                  </div>
-                                  <div className="col-7">
-                                    <input
-                                      type="text"
-                                      name="total_task"
-                                      className="form-control form-control-sm"
-                                      onChange={(event) =>
-                                        handleFormChange(index, event)
-                                      }
-                                      value={serviceNameInput.total_task}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
+                              <button
+                                className="btn btn-sm text-info"
+                                type="button"
+                                onClick={() => handleSubServiceAdd(index)}
+                              >
+                                <u>
+                                  <i>
+                                    <b>Add Sub Category</b>
+                                  </i>
+                                </u>
+                              </button>
+                              <table>
+                                <tbody>
+                                  {subserviceList[index].map(
+                                    (subservice, subIndex) => (
+                                      <tr key={subIndex}>
+                                        {subIndex > 0 && (
+                                          <>
+                                            <td className="w-50">
+                                              <input
+                                                type="text"
+                                                className="form-control form-control-sm"
+                                                onChange={(e) =>
+                                                  handleSubServiceChange(
+                                                    index,
+                                                    subIndex,
+                                                    "service1",
+                                                    e.target.value
+                                                  )
+                                                }
+                                                value={subservice.service1}
+                                              />
+                                            </td>
+                                            <td className="w-50">
+                                              <input
+                                                type="text"
+                                                className="form-control form-control-sm"
+                                                onChange={(e) =>
+                                                  handleSubServiceChange(
+                                                    index,
+                                                    subIndex,
+                                                    "service2",
+                                                    e.target.value
+                                                  )
+                                                }
+                                                value={subservice.service2}
+                                              />
+                                            </td>
+                                            <td>
+                                              <button
+                                                className="btn btn-danger btn-sm"
+                                                type="button"
+                                                onClick={() =>
+                                                  handleRemoveSubService(
+                                                    index,
+                                                    subIndex
+                                                  )
+                                                }
+                                              >
+                                                <FaTimes />
+                                              </button>
+                                            </td>
+                                          </>
+                                        )}
+                                      </tr>
+                                    )
+                                  )}
+                                </tbody>
+                              </table>
                             </td>
                             <td>
                               {index > 0 ? (
@@ -268,8 +355,8 @@ function ReportConfig() {
             </div>
           </div>
 
-          <div className="text-center">
-            <button className="btn btn-outline-primary shadow w-50 mt-5 mb-5" type="submit" onClick={handleSubmit}>Submit</button>
+          <div className="text-center"> 
+          {/* <button className="btn btn-outline-primary shadow w-50 mt-5 mb-5" type="submit" onClick={handleSubmit}>Submit</button> */}
           </div>
         </div>
       </div>
