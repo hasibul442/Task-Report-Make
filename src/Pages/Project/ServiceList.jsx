@@ -8,6 +8,9 @@ function ServiceList() {
     const [serviceList, setServiceList] = useState([
         {service :''}
     ]);
+    const [subserviceList, setSubServiceList] = useState([
+        {service1 :'', service2: ''}
+    ]);
    
 
     const handleFormChange= (index, event) => {
@@ -17,6 +20,7 @@ function ServiceList() {
         values[index].service = event.target.value;
         setServiceList(values);
     };
+
 
     
     const handleServiceAdd = () => {
@@ -41,6 +45,23 @@ function ServiceList() {
         setFulldata(data);
     }, [serviceList]);
 
+    const handleSubServiceAdd = () => {
+      setSubServiceList([...subserviceList, {  service1: "" , service2: ""}]);
+    };
+  
+    const handleRemoveSubService = (remove_index) => {
+      const sublist = [...subserviceList];
+      sublist.splice(remove_index, 1);
+      setServiceList(sublist);
+    };
+  
+    const handleSubServiceChange = (index, value) => {
+      const sublist = [...subserviceList];
+      sublist[index].service1 = value;
+      sublist[index].service2 = value;
+      setServiceList(sublist);
+    };
+
 
     console.log(fulldata);
   return (
@@ -64,10 +85,39 @@ function ServiceList() {
                            >
                              <u>
                                <i>
-                                 <b>Add Sub Category</b>
+                                 <b onClick={handleSubServiceAdd}>Add Sub Category</b>
                                </i>
                              </u>
                            </button>
+                           {subserviceList.map((index, index1) => (
+                            <tr key={index1}>
+                              <td className="w-50">
+                                <input
+                                  type="text"
+                                  className="form-control form-control-sm"
+                                  onChange={handleSubServiceChange}
+                                  // value={service1.service1}
+                                />
+                              </td>
+                              <td className="w-50">
+                                <input
+                                  type="text"
+                                  className="form-control form-control-sm"
+                                  onChange={handleSubServiceChange}
+                                  // value={service1.service2}
+                                />
+                              </td>
+                              <td>
+                                  <button
+                                    className="btn btn-danger"
+                                    type="button"
+                                    onClick={() => handleRemoveSubService(index1)}
+                                  >
+                                    <FaTimes />
+                                  </button>
+                              </td>
+                            </tr>
+                          ))}
                          </td>
                          <td>
                            {index > 0 ? (

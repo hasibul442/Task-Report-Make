@@ -212,7 +212,7 @@ console.log(makeFormate);
                   <form action="">
                     <table className="table table-border">
                       <tbody>
-                      {serviceList.map((serviceNameInput, index) => (
+                      {/* {serviceList.map((serviceNameInput, index) => (
                          <tr key={index}>
                          <td className="w-100">
                            <input
@@ -257,7 +257,8 @@ console.log(makeFormate);
                           }
                          </td>
                        </tr>  
-                       ))}
+                       ))} */}
+                       <ServiceList/>
                       </tbody>
                     </table>
                   </form>
