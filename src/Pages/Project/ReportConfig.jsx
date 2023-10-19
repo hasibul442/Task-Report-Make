@@ -4,13 +4,10 @@ import {
   collection,
   addDoc,
   getDocs,
-  deleteDoc,
-  doc,
   orderBy,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { FaCross, FaPlus, FaTimes } from "react-icons/fa";
-import ServiceList from "./ServiceList";
 
 function ReportConfig() {
   const [projectdata, setProjectdata] = useState([]);
@@ -44,7 +41,6 @@ function ReportConfig() {
   const handleFormChange = (index, event) => {
     let values = [...serviceList];
     values[index][event.target.name] = event.target.value;
-    // values[index][event.target.name] = event.target.value;
     setServiceList(values);
   };
 
@@ -259,7 +255,6 @@ function ReportConfig() {
                             </td>
                           </tr>
                         ))}
-                        {/* <ServiceList/> */}
                       </tbody>
                     </table>
                   </form>
