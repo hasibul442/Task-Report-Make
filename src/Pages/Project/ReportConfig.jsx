@@ -37,22 +37,61 @@ function ReportConfig() {
     getProject();
   }, []);
 
-  const [numSubCategories, setNumSubCategories] = useState(0);
+ 
+ 
 
-  const handleAddSubCategory = () => {
-    setNumSubCategories(numSubCategories + 1);
-  };
+  const [serviceList, setServiceList] = useState([
+    {service :''}
+]);
 
-  const handleRemoveSubCategory = (event) => {
-    event.preventDefault();
-    const row = event.target.closest('.subcatblock');
-    if (row) {
-      row.remove();
-      setNumSubCategories(numSubCategories - 1);
 
-    }
-    setNumSubCategories(0)
-  };
+const handleFormChange= (index, event) => {
+    // console.log(event);
+    let values = [...serviceList];
+    // console.log(values[index]);
+    values[index].service = event.target.value;
+    setServiceList(values);
+};
+
+
+const handleServiceAdd = () => {
+    setServiceList([...serviceList, {service :''}]);
+  }
+const handleRemoveService = (index) => {
+  const list = [...serviceList];
+  list.splice(index, 1);
+
+//   console.log(index);
+  setServiceList(list);
+}
+
+const [fulldata, setFulldata] = useState({});
+//make data formate for firebase
+
+function allservicesData(){
+  const data = {};
+  for (const item of serviceList) {
+    data[item.service] = {
+      total_task: "10",
+      complete_task: "5",
+      incomplete_task: "5",
+      progress: "50%",
+    };
+  }
+  return data;
+}
+
+const makeFormate = {
+  "project_name": project,
+  "milestone": milestone,
+  "start_date": startDate,
+  "investigation_date": investigationDate,
+  "wbs_date": wbsDate,
+  "release_date": releaseDate,
+  "data": allservicesData()
+}
+
+console.log(makeFormate);
 
 
 
@@ -173,7 +212,52 @@ function ReportConfig() {
                   <form action="">
                     <table className="table table-border">
                       <tbody>
-                       <ServiceList />
+                      {serviceList.map((serviceNameInput, index) => (
+                         <tr key={index}>
+                         <td className="w-100">
+                           <input
+                             type="text"
+                             name='serviceName'
+                             className="form-control form-control-sm"
+                            value={serviceNameInput.service}
+                            // onChange={(event) => handleFormChange(index, event.target.value)}
+                            onChange={event => handleFormChange(index, event)}
+                            
+                           />
+                           <button
+                             className="btn btn-sm text-info"
+                             type="button"
+                            //  onClick={handleAddSubCategory}
+                           >
+                             <u>
+                               <i>
+                                 <b>Add Sub Category</b>
+                               </i>
+                             </u>
+                           </button>
+                         </td>
+                         <td>
+                           {index > 0 ? (
+                              <button
+                                className="btn btn-danger"
+                                type="button"
+                                onClick={() => handleRemoveService(index)}
+                              >
+                                <FaTimes />
+                              </button>
+                            ):(
+                              <button
+                              className="btn btn-success"
+                              type="button"
+                              onClick={handleServiceAdd}
+                            >
+                              <FaPlus />
+                            </button>  
+                            )
+                          }
+                         </td>
+                       </tr>  
+                       ))}
                       </tbody>
                     </table>
                   </form>
