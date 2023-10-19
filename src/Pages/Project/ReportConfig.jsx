@@ -37,66 +37,97 @@ function ReportConfig() {
     getProject();
   }, []);
 
- 
- 
+  const [serviceList, setServiceList] = useState([{ service: "" }]);
 
-  const [serviceList, setServiceList] = useState([
-    {service :''}
-]);
+  const [subserviceList, setSubServiceList] = useState([
+    [{ service1: "", service2: "" }],
+  ]);
 
-
-const handleFormChange= (index, event) => {
-    // console.log(event);
+  const handleFormChange = (index, event) => {
     let values = [...serviceList];
-    // console.log(values[index]);
     values[index].service = event.target.value;
     setServiceList(values);
-};
+  };
 
+  const handleServiceAdd = () => {
+    setServiceList([...serviceList, { service: "" }]);
+    setSubServiceList([...subserviceList, []]);
+  };
+  const handleRemoveService = (index) => {
+    const list = [...serviceList];
+    list.splice(index, 1);
+    setServiceList(list);
+  };
 
-const handleServiceAdd = () => {
-    setServiceList([...serviceList, {service :''}]);
+  const handleSubServiceAdd = (index) => {
+    const subservices = [...subserviceList];
+    subservices[index].push({ service1: "", service2: "" });
+    setSubServiceList(subservices);
+  };
+
+  const handleRemoveSubService = (index, subIndex) => {
+    const subservices = [...subserviceList];
+    subservices[index].splice(subIndex, 1);
+    setSubServiceList(subservices);
+  };
+  const handleSubServiceChange = (index, subIndex, field, value) => {
+    const subservices = [...subserviceList];
+    subservices[index][subIndex][field] = value;
+    setSubServiceList(subservices);
+  };
+
+  const [fulldata, setFulldata] = useState({});
+
+  function allservicesData() {
+    const data = {};
+    for (const item of serviceList) {
+      data[item.service] = 
+        subServiceData()
+    }
+    return data;
   }
-const handleRemoveService = (index) => {
-  const list = [...serviceList];
-  list.splice(index, 1);
 
-//   console.log(index);
-  setServiceList(list);
-}
-
-const [fulldata, setFulldata] = useState({});
-//make data formate for firebase
-
-function allservicesData(){
-  const data = {};
-  for (const item of serviceList) {
-    data[item.service] = {
-      total_task: "10",
-      complete_task: "5",
-      incomplete_task: "5",
-      progress: "50%",
-    };
+  function subServiceData() {
+    const data = {};
+    subserviceList.map((item, index) => {
+      // console.log(item[index+1].service1)
+      // item[index].service1 = item[index].service2;
+      if (item.length > 1){
+        data[item[index+1].service1] = item[index+1].service2;
+      }
+    });
+    return data;
   }
-  return data;
-}
 
-const makeFormate = {
-  "project_name": project,
-  "milestone": milestone,
-  "start_date": startDate,
-  "investigation_date": investigationDate,
-  "wbs_date": wbsDate,
-  "release_date": releaseDate,
-  "data": allservicesData()
-}
-
-console.log(makeFormate);
+  const d = {
+    project_name: project,
+          milestone: milestone,
+          start_date: startDate,
+          investigation_date: investigationDate,
+          wbs_date: wbsDate,
+          release_date: releaseDate,
+          data: allservicesData(),
+  }
+ console.log(d);
 
 
-
-
-  // console.log(serviceList);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const docRef = await addDoc(collection(db, "report_config"), {
+        project_name: project,
+        milestone: milestone,
+        start_date: startDate,
+        investigation_date: investigationDate,
+        wbs_date: wbsDate,
+        release_date: releaseDate,
+        data: allservicesData(),
+      });
+      window.location.reload();
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  }
   return (
     <>
       <div className="mt-5">
@@ -212,59 +243,120 @@ console.log(makeFormate);
                   <form action="">
                     <table className="table table-border">
                       <tbody>
-                      {/* {serviceList.map((serviceNameInput, index) => (
-                         <tr key={index}>
-                         <td className="w-100">
-                           <input
-                             type="text"
-                             name='serviceName'
-                             className="form-control form-control-sm"
-                            value={serviceNameInput.service}
-                            // onChange={(event) => handleFormChange(index, event.target.value)}
-                            onChange={event => handleFormChange(index, event)}
-                            
-                           />
-                           <button
-                             className="btn btn-sm text-info"
-                             type="button"
-                            //  onClick={handleAddSubCategory}
-                           >
-                             <u>
-                               <i>
-                                 <b>Add Sub Category</b>
-                               </i>
-                             </u>
-                           </button>
-                         </td>
-                         <td>
-                           {index > 0 ? (
+                        {serviceList.map((serviceNameInput, index) => (
+                          <tr key={index}>
+                            <td className="w-100">
+                              <input
+                                type="text"
+                                name="serviceName"
+                                className="form-control form-control-sm"
+                                value={serviceNameInput.service}
+                                onChange={(event) =>
+                                  handleFormChange(index, event)
+                                }
+                              />
                               <button
-                                className="btn btn-danger"
+                                className="btn btn-sm text-info"
                                 type="button"
-                                onClick={() => handleRemoveService(index)}
+                                onClick={() => handleSubServiceAdd(index)}
                               >
-                                <FaTimes />
+                                <u>
+                                  <i>
+                                    <b>Add Sub Category</b>
+                                  </i>
+                                </u>
                               </button>
-                            ):(
-                              <button
-                              className="btn btn-success"
-                              type="button"
-                              onClick={handleServiceAdd}
-                            >
-                              <FaPlus />
-                            </button>  
-                            )
-                          }
-                         </td>
-                       </tr>  
-                       ))} */}
-                       <ServiceList/>
+                              <table>
+                                <tbody>
+                                  {subserviceList[index].map(
+                                    (subservice, subIndex) => (
+                                      <tr key={subIndex}>
+                                        {subIndex > 0 && (
+                                          <>
+                                            <td className="w-50">
+                                              <input
+                                                type="text"
+                                                className="form-control form-control-sm"
+                                                onChange={(e) =>
+                                                  handleSubServiceChange(
+                                                    index,
+                                                    subIndex,
+                                                    "service1",
+                                                    e.target.value
+                                                  )
+                                                }
+                                                value={subservice.service1}
+                                              />
+                                            </td>
+                                            <td className="w-50">
+                                              <input
+                                                type="text"
+                                                className="form-control form-control-sm"
+                                                onChange={(e) =>
+                                                  handleSubServiceChange(
+                                                    index,
+                                                    subIndex,
+                                                    "service2",
+                                                    e.target.value
+                                                  )
+                                                }
+                                                value={subservice.service2}
+                                              />
+                                            </td>
+                                            <td>
+                                              <button
+                                                className="btn btn-danger btn-sm"
+                                                type="button"
+                                                onClick={() =>
+                                                  handleRemoveSubService(
+                                                    index,
+                                                    subIndex
+                                                  )
+                                                }
+                                              >
+                                                <FaTimes />
+                                              </button>
+                                            </td>
+                                          </>
+                                        )}
+                                      </tr>
+                                    )
+                                  )}
+                                </tbody>
+                              </table>
+                            </td>
+                            <td>
+                              {index > 0 ? (
+                                <button
+                                  className="btn btn-danger btn-sm"
+                                  type="button"
+                                  onClick={() => handleRemoveService(index)}
+                                >
+                                  <FaTimes />
+                                </button>
+                              ) : (
+                                <button
+                                  className="btn btn-success btn-sm"
+                                  type="button"
+                                  onClick={handleServiceAdd}
+                                >
+                                  <FaPlus />
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                        {/* <ServiceList/> */}
                       </tbody>
                     </table>
                   </form>
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="text-center"> 
+          {/* <button className="btn btn-outline-primary shadow w-50 mt-5 mb-5" type="submit" onClick={handleSubmit}>Submit</button> */}
           </div>
         </div>
       </div>
