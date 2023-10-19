@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { FaCross, FaPlus, FaTimes } from "react-icons/fa";
+import ServiceList from "./ServiceList";
 
 function ReportConfig() {
   const [projectdata, setProjectdata] = useState([]);
@@ -43,10 +44,20 @@ function ReportConfig() {
   };
 
   const handleRemoveSubCategory = (event) => {
+    event.preventDefault();
     const row = event.target.closest('.subcatblock');
-    row.remove();
-    setNumSubCategories(numSubCategories - 1);
+    if (row) {
+      row.remove();
+      setNumSubCategories(numSubCategories - 1);
+
+    }
+    setNumSubCategories(0)
   };
+
+
+
+
+  // console.log(serviceList);
   return (
     <>
       <div className="mt-5">
@@ -162,66 +173,7 @@ function ReportConfig() {
                   <form action="">
                     <table className="table table-border">
                       <tbody>
-                        <tr>
-                          <td className="w-100">
-                            <input
-                              type="text"
-                              className="form-control form-control-sm"
-                              onChange={(e) => {
-                                setMilestone(e.target.value);
-                              }}
-                            />
-                            <button
-                              href=""
-                              className="btn"
-                              type="button"
-                              onClick={handleAddSubCategory}
-                            >
-                              <u>
-                                <i>
-                                  <b>Add Sub Category</b>
-                                </i>
-                              </u>
-                            </button>
-                            {Array.from({ length: numSubCategories }).map(
-                              (_, index) => (
-                                <div
-                                  key={index}
-                                  className="row g-3 mb-2 pl-2 align-items-right subcatblock"
-                                >
-                                  <div className="col-auto">
-                                    <input
-                                      type="text"
-                                      className="form-control form-control-sm"
-                                    />
-                                  </div>
-
-                                  <div className="col-auto">
-                                    <input
-                                      type="text"
-                                      className="form-control form-control-sm"
-                                    />
-                                  </div>
-                                  <div className="col-auto">
-                                    <button
-                                      className="btn btn-outline-danger btn-sm m-0 "
-                                      type="button"
-                                      onClick={handleRemoveSubCategory}
-                                    >
-                                      {" "}
-                                      <FaTimes />
-                                    </button>
-                                  </div>
-                                </div>
-                              )
-                            )}
-                          </td>
-                          <td>
-                            <button className="btn btn-outline-success btn-sm">
-                              <FaPlus />
-                            </button>
-                          </td>
-                        </tr>
+                       <ServiceList />
                       </tbody>
                     </table>
                   </form>
