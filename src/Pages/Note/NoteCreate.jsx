@@ -19,14 +19,11 @@ function NoteCreate() {
   const [fileData, setFileData] = useState("");
   const [filename, setFilename] = useState("");
   const [lastModified, setLastModified] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleFileChange = (e) => {
-    // console.log(event);
     const file = e.target.files[0];
     const reader = new FileReader();
-    let lm = file.lastModifiedDate.toLocaleString();
-
-    console.log(lm);
     reader.onload = (event) => {
       setFilename(file.name);
       setFileData(event.target.result);
@@ -60,14 +57,12 @@ function NoteCreate() {
     }
   };
 
-  // Read Data from Firebase
   const [notesdata, setnotesdata] = useState([]);
 
   const getNotes = async () => {
     const querySnapshot = await getDocs(
       query(collection(db, "notes"), orderBy("create_at", "desc"))
     );
-    // console.log(querySnapshot);
     const notesdata = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -78,6 +73,16 @@ function NoteCreate() {
   useEffect(() => {
     getNotes();
   }, []);
+
+  const filteredNotes = notesdata.filter((note) => {
+    const nameMatch = note.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const noteMatch = note.note
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return nameMatch || noteMatch;
+  });
 
   // Delete Data from Firebase
   const deleteNote = async (id) => {
@@ -113,13 +118,13 @@ function NoteCreate() {
     }
   };
 
-    // Edit Data from Firebase
-    const editNote = async (id) => {
-        Swal.fire({
-            icon: "info",
-            title: "This Function is Under Upgradation",
-            showConfirmButton: true
-        })
+  // Edit Data from Firebase
+  const editNote = async (id) => {
+    Swal.fire({
+      icon: "info",
+      title: "This Function is Under Upgradation",
+      showConfirmButton: true,
+    });
     //   try {
     //     const docRef = doc(db, "notes", id);
     //     const docSnap = await getDoc(docRef);
@@ -132,18 +137,18 @@ function NoteCreate() {
     //   } catch (e) {
     //     console.error("Error adding document: ", e);
     //   }
-    };
+  };
 
-    const handleCopyToClipboard = (id) => {
-        const note = notesdata.find((note) => note.id === id);
-        navigator.clipboard.writeText(note.note);
-        Swal.fire({
-            icon: "success",
-            title: "You have successfully copied the note.",
-            showConfirmButton: false,
-            timer: 1500,
-        });
-    };
+  const handleCopyToClipboard = (id) => {
+    const note = notesdata.find((note) => note.id === id);
+    navigator.clipboard.writeText(note.note);
+    Swal.fire({
+      icon: "success",
+      title: "You have successfully copied the note.",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
 
   return (
     <>
@@ -194,8 +199,21 @@ function NoteCreate() {
         </div>
 
         <section className="my-5">
+          <div className="">
+            <div className="">
+              <div className="input-group mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
           <Masonry columnsCount={4} gutter="30px">
-            {notesdata.map((note, index) => (
+            {filteredNotes.map((note, index) => (
               <div className="notes" key={index}>
                 <div className="card shadow border-0">
                   <div className="card-body">
