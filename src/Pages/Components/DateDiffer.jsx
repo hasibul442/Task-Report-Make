@@ -19,8 +19,6 @@ function DateDiffer(props) {
     } else {
         diffString = 'just now';
     }
-
-      console.log(diffString);
   return (
     <>
         {diffString}

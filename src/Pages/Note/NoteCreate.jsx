@@ -134,14 +134,15 @@ function NoteCreate() {
     //   }
     };
 
-    const handleCopyToClipboard = () => {
-        // navigator.clipboard.writeText(fileData);
+    const handleCopyToClipboard = (id) => {
+        const note = notesdata.find((note) => note.id === id);
+        navigator.clipboard.writeText(note.note);
         Swal.fire({
-            icon: "info",
-            title: "Copied to Clipboard Wunder Development",
+            icon: "success",
+            title: "You have successfully copied the note.",
             showConfirmButton: false,
             timer: 1500,
-        })
+        });
     };
 
   return (
@@ -213,7 +214,7 @@ function NoteCreate() {
                       <div>
                         <button
                           className="btn btn-outline-info btn-sm mx-1"
-                          onClick={handleCopyToClipboard}
+                          onClick={() => handleCopyToClipboard(note.id)}
                         >
                           <FaCopy />
                         </button>
