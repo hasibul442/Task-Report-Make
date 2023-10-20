@@ -11,7 +11,7 @@ import {
   startAt,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
@@ -133,6 +133,17 @@ function NoteCreate() {
     //     console.error("Error adding document: ", e);
     //   }
     };
+
+    const handleCopyToClipboard = () => {
+        // navigator.clipboard.writeText(fileData);
+        Swal.fire({
+            icon: "info",
+            title: "Copied to Clipboard Wunder Development",
+            showConfirmButton: false,
+            timer: 1500,
+        })
+    };
+
   return (
     <>
       <div className="container-fluid mt-5">
@@ -184,7 +195,7 @@ function NoteCreate() {
         <section className="my-5">
           <Masonry columnsCount={4} gutter="30px">
             {notesdata.map((note, index) => (
-              <div className="" key={index}>
+              <div className="notes" key={index}>
                 <div className="card shadow border-0">
                   <div className="card-body">
                     <h6>{note.name}</h6>
@@ -200,6 +211,12 @@ function NoteCreate() {
                         <DateDiffer createAt={note.create_at} />
                       </div>
                       <div>
+                        <button
+                          className="btn btn-outline-info btn-sm mx-1"
+                          onClick={handleCopyToClipboard}
+                        >
+                          <FaCopy />
+                        </button>
                         <button
                           className="btn btn-outline-success btn-sm mx-1"
                           onClick={() => editNote(note.id)}
