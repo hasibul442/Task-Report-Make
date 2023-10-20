@@ -14,6 +14,7 @@ import { db } from "../../firebase";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
+import DateDiffer from "../Components/DateDiffer";
 function NoteCreate() {
   const [fileData, setFileData] = useState("");
   const [filename, setFilename] = useState("");
@@ -64,11 +65,9 @@ function NoteCreate() {
 
   const getNotes = async () => {
     const querySnapshot = await getDocs(
-        query(
-            collection(db, "notes"),
-            orderBy("create_at", "desc")
-          )
+      query(collection(db, "notes"), orderBy("create_at", "desc"))
     );
+    // console.log(querySnapshot);
     const notesdata = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -161,9 +160,9 @@ function NoteCreate() {
           </div>
         </div>
 
-        <section className="mt-5">
-          <Masonry columnsCount={4} gutter="10px">
-            {notesdata.map((note,index) => (
+        <section className="my-5">
+          <Masonry columnsCount={4} gutter="30px">
+            {notesdata.map((note, index) => (
               <div className="" key={index}>
                 <div className="card shadow border-0">
                   <div className="card-body">
@@ -171,21 +170,28 @@ function NoteCreate() {
                     <p className="fw-bold text-info font-monospace">
                       {note.lastModified}
                     </p>
-                    <small>Create at: {note.create_at.toLocaleString}</small>
+
                     <p style={{ whiteSpace: "pre-line" }}>{note.note}</p>
                   </div>
                   <div className="card-footer">
-                    <button
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => deleteEmployee(note.id)}
-                    >
-                      <FaTrash />
-                    </button>
+                    <div className="d-flex justify-content-between">
+                      <div>
+                        <DateDiffer createAt={note.create_at} />
+                      </div>
+                      <div>
+                        <button
+                          className="btn btn-outline-danger btn-sm"
+                          onClick={() => deleteEmployee(note.id)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
-            </Masonry>
+          </Masonry>
         </section>
       </div>
     </>
