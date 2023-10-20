@@ -10,6 +10,7 @@ import Employee from './Pages/Employee'
 import ProjectList from './Pages/Project/ProjectList'
 import ReportConfig from './Pages/Project/ReportConfig'
 import ReportConfigList from './Pages/Project/ReportConfigList'
+import NoteCreate from './Pages/Note/NoteCreate'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -32,7 +33,8 @@ function App() {
               <Route path='/report_config' element={<ReportConfig />} />
               <Route path='/report_list' element={<ReportConfigList />} />
 
-              
+              {/* Note Service */}
+              <Route path='/note' element={<NoteCreate />} />
             </Routes>
           </Router>
       </main>
