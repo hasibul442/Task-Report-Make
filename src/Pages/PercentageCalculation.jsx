@@ -28,6 +28,60 @@ function PercentageCalculation() {
         setProjectdata(projectdata);
       }
       
+      // const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+      // useEffect(() => {
+      //   function onlineHandler() {
+      //     checkInternetConnectivity().then((isConnected) => {
+      //       setIsOnline(isConnected);
+      //       console.log("Internet connectivity: " + isConnected);
+      //     });
+      //   }
+    
+      //   function offlineHandler() {
+      //       setIsOnline(false);
+      //   }
+    
+      //   window.addEventListener("online", onlineHandler);
+      //   window.addEventListener("offline", offlineHandler);
+  
+    
+      //   return () => {
+      //       window.removeEventListener("online", onlineHandler);
+      //       window.removeEventListener("offline", offlineHandler);
+      //   };
+      // }, []);
+
+      // async function checkInternetConnectivity() {
+      //   try {
+      //     console.log("Checking internet connectivity...");
+      //     const response = await fetch("https://www.google.com", { mode: "no-cors" });
+      //     return response.status >= 200 && response.status < 300;
+      //   } catch (error) {
+      //     return false;
+      //   }
+      // }
+
+      const [status, setStatus] = useState(() => {
+        if (navigator.onLine) {
+          console.log("Connected to network.");
+          return true;
+        } else {
+          return false;
+        }
+      });
+    
+      useEffect(() => {
+        window.ononline = (e) => {
+          console.log("Connected to network.");
+          setStatus(true);
+        };
+    
+        window.onoffline = (e) => {
+          console.log("Network connection lost.");
+          setStatus(false);
+        };
+      }, [status]);
   return (
     <>
       <section className='mt-5'>
@@ -44,6 +98,20 @@ function PercentageCalculation() {
           </div>
         </div>
       </section>
+
+      <div className='container mt-5'>
+      		{status ? (
+        		<p>You are online.</p>
+      		) : (
+        		<p>You are offline. Please check your internet connection.</p>
+      		)}
+
+          <button
+            className={`btn btn-primary ${status ? "" : "disabled"}`}
+          >
+Button Test
+          </button>
+    	</div>
     </>
   )
 }
