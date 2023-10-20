@@ -11,7 +11,7 @@ import {
   startAt,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
@@ -80,7 +80,7 @@ function NoteCreate() {
   }, []);
 
   // Delete Data from Firebase
-  const deleteEmployee = async (id) => {
+  const deleteNote = async (id) => {
     try {
       Swal.fire({
         title: "Are you sure?",
@@ -112,6 +112,27 @@ function NoteCreate() {
       console.error("Error adding document: ", e);
     }
   };
+
+    // Edit Data from Firebase
+    const editNote = async (id) => {
+        Swal.fire({
+            icon: "info",
+            title: "This Function is Under Upgradation",
+            showConfirmButton: true
+        })
+    //   try {
+    //     const docRef = doc(db, "notes", id);
+    //     const docSnap = await getDoc(docRef);
+    //     if (docSnap.exists()) {
+    //       console.log("Document data:", docSnap.data());
+    //     } else {
+    //       // doc.data() will be undefined in this case
+    //       console.log("No such document!");
+    //     }
+    //   } catch (e) {
+    //     console.error("Error adding document: ", e);
+    //   }
+    };
   return (
     <>
       <div className="container-fluid mt-5">
@@ -180,8 +201,14 @@ function NoteCreate() {
                       </div>
                       <div>
                         <button
-                          className="btn btn-outline-danger btn-sm"
-                          onClick={() => deleteEmployee(note.id)}
+                          className="btn btn-outline-success btn-sm mx-1"
+                          onClick={() => editNote(note.id)}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="btn btn-outline-danger btn-sm mx-1"
+                          onClick={() => deleteNote(note.id)}
                         >
                           <FaTrash />
                         </button>
