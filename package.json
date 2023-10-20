@@ -17,7 +17,10 @@
     "react-bootstrap": "^2.9.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
-    "react-router-dom": "^6.16.0"
+    "react-photo-album": "^2.3.0",
+    "react-responsive-masonry": "^2.1.7",
+    "react-router-dom": "^6.16.0",
+    "sweetalert2": "^11.7.32"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
