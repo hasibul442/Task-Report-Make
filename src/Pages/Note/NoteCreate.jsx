@@ -7,16 +7,13 @@ import {
   orderBy,
   deleteDoc,
   doc,
-  query,
-  startAt,
+  query
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import NoteCard from "../Components/NoteCard";
 function NoteCreate() {
   const [fileData, setFileData] = useState("");
   const [filename, setFilename] = useState("");
@@ -87,7 +84,38 @@ function NoteCreate() {
   });
 
   // Delete Data from Firebase
-  
+  const deleteNote = async (id) => {
+    try {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to recover this note!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await deleteDoc(doc(db, "notes", id));
+          await getNotes();
+          Swal.fire({
+            icon: "success",
+            title: "You have successfully deleted the note.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          Swal.fire({
+            icon: "error",
+            title: "Cancelled",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
 
   // Edit Data from Firebase
   const editNote = async (id) => {
@@ -183,7 +211,49 @@ function NoteCreate() {
               </div>
             </div>
           </div>
-            <NoteCard data={filteredNotes} />
+          <Masonry columnsCount={4} gutter="30px">
+            {filteredNotes.map((note, index) => (
+              <div className="notes" key={index}>
+                <div className="card shadow border-0">
+                  <div className="card-body">
+                    <h6>{note.name}</h6>
+                    <p className="fw-bold text-info font-monospace">
+                      {note.lastModified}
+                    </p>
+
+                    <p style={{ whiteSpace: "pre-line" }}>{note.note}</p>
+                  </div>
+                  <div className="card-footer">
+                    <div className="d-flex justify-content-between">
+                      <div>
+                        <DateDiffer createAt={note.create_at} />
+                      </div>
+                      <div>
+                        <button
+                          className="btn btn-outline-info btn-sm mx-1"
+                          onClick={() => handleCopyToClipboard(note.id)}
+                        >
+                          <FaCopy />
+                        </button>
+                        <button
+                          className="btn btn-outline-success btn-sm mx-1"
+                          onClick={() => editNote(note.id)}
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          className="btn btn-outline-danger btn-sm mx-1"
+                          onClick={() => deleteNote(note.id)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Masonry>
         </section>
       </div>
     </>
