@@ -7,13 +7,14 @@ import {
   orderBy,
   deleteDoc,
   doc,
-  query
+  query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
+import { Modal } from "react-bootstrap";
 function NoteCreate() {
   const [fileData, setFileData] = useState("");
   const [filename, setFilename] = useState("");
@@ -118,6 +119,21 @@ function NoteCreate() {
   };
 
   // Edit Data from Firebase
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [noteData, setNoteData] = useState({});
+
+  const handleOpenModal = (data) => {
+    console.log(isModalOpen);
+    setNoteData(data);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+
   const editNote = async (id) => {
     Swal.fire({
       icon: "info",
@@ -237,7 +253,7 @@ function NoteCreate() {
                         </button>
                         <button
                           className="btn btn-outline-success btn-sm mx-1"
-                          onClick={() => editNote(note.id)}
+                          onClick={() => handleOpenModal(note)}
                         >
                           <FaEdit />
                         </button>
@@ -256,6 +272,32 @@ function NoteCreate() {
           </Masonry>
         </section>
       </div>
+
+      {/* Edit Modal */}
+            <Modal isOpen={isModalOpen} onRequestClose={handleCloseModal}>
+        <form 
+        // onSubmit={handleSubmit}
+        >
+          <label htmlFor="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            value={noteData.title}
+            onChange={(event) =>
+              setNoteData({ ...noteData, title: event.target.value })
+            }
+          />
+          <label htmlFor="content">Content:</label>
+          <textarea
+            id="content"
+            value={noteData.content}
+            onChange={(event) =>
+              setNoteData({ ...noteData, content: event.target.value })
+            }
+          />
+          <button type="submit">Save</button>
+        </form>
+      </Modal>
     </>
   );
 }
