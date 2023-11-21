@@ -1,9 +1,11 @@
 import React from "react";
 import "./navbar.css"
 import { Link, useLocation } from "react-router-dom";
-function NavBar() {
+function NavBar({ isVisible }) {
 	const location = useLocation();
-
+	if (!isVisible) {
+		return null;
+	  }
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
