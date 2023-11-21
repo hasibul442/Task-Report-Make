@@ -12,10 +12,14 @@ import ReportConfig from './Pages/Project/ReportConfig'
 import ReportConfigList from './Pages/Project/ReportConfigList'
 import NoteCreate from './Pages/Note/NoteCreate'
 import Login from './Pages/Auth/Login'
-
+import SingUp from './Pages/Auth/SingUp'
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useEffect } from 'react'
 
 function App() {
-  // const location = useLocation();
+  
+  
+  
   return (
     <>
     <main className=''>
@@ -32,9 +36,10 @@ function App() {
           <Route path='/report_config' element={<><NavBar isVisible={true} /><ReportConfig /></>} />
           <Route path='/report_list' element={<><NavBar isVisible={true} /><ReportConfigList /></>} />
 
+          <Route path="/login" element={<><NavBar isVisible={false} /><Login /></>} />
+          <Route path="/signup" element={<><NavBar isVisible={false} /><SingUp /></>} />
           {/* Note Service */}
           <Route path='/note' element={<><NavBar isVisible={true} /><NoteCreate /></>} />
-          <Route path="/login" element={<><NavBar isVisible={false} /><Login /></>} />
           {/* <Route path="/signup" element={<Signup/>}/> */}
         </Routes>
       </Router>
