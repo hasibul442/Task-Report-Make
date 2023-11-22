@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom'
 import NavBar from './include/NavBar'
 import Auto from './Pages/Auto'
 import Manual from './Pages/Manual'
@@ -17,20 +17,36 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react'
 
 function App() {
-  
-  
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+      setLoading(false);
+    });
+  }, []);
+
+  // console.log(isLoggedIn);
+  function PrivateRoute({ children }) {
+    const location = useLocation();
+    if (loading) {
+      return null; // or your loading spinner
+    }
+    return isLoggedIn ? children : <Navigate to="/login" state={{ from: location }} />;
+  }
+
   return (
     <>
     <main className=''>
       <Router>
         <Routes>
+          {/* Private Route */}
           <Route path='/' element={<><NavBar isVisible={true} /><Auto /></>} />
           <Route path='/auto-task-report' element={<><NavBar isVisible={true} /><Auto /></>} />
           <Route path='/manual-task-report' element={<><NavBar isVisible={true} /><Manual /></>} />
           <Route path='/task-list-update' element={<><NavBar isVisible={true} /><ListUpdate /></>} />
           <Route path='/percentage' element={<><NavBar isVisible={true} /><PercentageCalculation /></>} />
-          <Route path='/employee' element={<><NavBar isVisible={true} /><Employee /></>} />
 
           <Route path='/project' element={<><NavBar isVisible={true} /><ProjectList /></>} />
           <Route path='/report_config' element={<><NavBar isVisible={true} /><ReportConfig /></>} />
@@ -38,9 +54,10 @@ function App() {
 
           <Route path="/login" element={<><NavBar isVisible={false} /><Login /></>} />
           <Route path="/signup" element={<><NavBar isVisible={false} /><SingUp /></>} />
-          {/* Note Service */}
-          <Route path='/note' element={<><NavBar isVisible={true} /><NoteCreate /></>} />
-          {/* <Route path="/signup" element={<Signup/>}/> */}
+
+          {/* Private Route */}
+          <Route path='/note' element={<PrivateRoute><NavBar isVisible={true} /><NoteCreate /></PrivateRoute>} />
+          <Route path='/employee' element={<PrivateRoute><NavBar isVisible={true} /><Employee /></PrivateRoute>} />
         </Routes>
       </Router>
     </main>

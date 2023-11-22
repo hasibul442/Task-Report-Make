@@ -1,15 +1,17 @@
 import React from "react";
 import "./login.css";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import {Link, useNavigate} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate()
+  let location = useLocation();
 
-  
+  // console.log(location.state.from.pathname)
   const login = async (event) => {
     event.preventDefault();
     try {
@@ -19,12 +21,19 @@ function Login() {
         email,
         password
       );
-      const user = userCredential.user;
-      navigate("/");
-      // User signed up successfully.
+      navigate(location.state.from.pathname );
     } catch (error) {
-      // Handle error.
-      console.error(error);
+      let errorMessage;
+      if (error.code === 'auth/invalid-login-credentials') {
+        errorMessage = 'No user found with this email.';
+      } else {
+        errorMessage = error.message;
+      }
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMessage,
+      });
     }
   };
   return (
@@ -47,7 +56,7 @@ function Login() {
             </button>
             <div className="register-link">
               <p>
-                Dont't have an account? <a href="#">Register</a>
+                Dont't have an account? <Link to="/signup">Register</Link>
               </p>
             </div>
           </form>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import {Link, useNavigate} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
 
 function SingUp() {
   const [email, setEmail] = useState('');
@@ -62,7 +62,7 @@ function SingUp() {
             </button>
             <div className="register-link">
               <p>
-                Already have and Account <a href="#">Login</a>
+                Already have and Account <Link to="/login">Login</Link>
               </p>
             </div>
           </form>
