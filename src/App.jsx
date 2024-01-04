@@ -3,6 +3,7 @@ import './App.css'
 import { Navigate, Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom'
 import NavBar from './include/NavBar'
 import Auto from './Pages/Auto'
+import AutoTotal from './Pages/AutoTotal'
 import Manual from './Pages/Manual'
 import ListUpdate from './Pages/ListUpdate'
 import PercentageCalculation from './Pages/PercentageCalculation'
@@ -44,6 +45,7 @@ function App() {
           {/* Private Route */}
           <Route path='/' element={<><NavBar isVisible={true} /><Auto /></>} />
           <Route path='/auto-task-report' element={<><NavBar isVisible={true} /><Auto /></>} />
+          <Route path='/total-task-report' element={<><NavBar isVisible={true} /><AutoTotal /></>} />
           <Route path='/manual-task-report' element={<><NavBar isVisible={true} /><Manual /></>} />
           <Route path='/task-list-update' element={<><NavBar isVisible={true} /><ListUpdate /></>} />
           <Route path='/percentage' element={<><NavBar isVisible={true} /><PercentageCalculation /></>} />

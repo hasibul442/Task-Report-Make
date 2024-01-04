@@ -33,6 +33,7 @@ function NavBar({ isVisible }) {
 									<Link to="/auto-task-report" className={`nav-link ${location.pathname === "/auto-task-report" ? "active" : ""} ${location.pathname === "/" ? "active" : ""}`}>Auto Task Report</Link>
 								</li>
 								<li className="nav-item"><Link to="/manual-task-report" className={`nav-link ${location.pathname === "/manual-task-report" ? "active" : ""}`}>Manual Task Report</Link></li>
+								<li className="nav-item"><Link to="/total-task-report" className={`nav-link ${location.pathname === "/total-task-report" ? "active" : ""}`}>Total Task Report</Link></li>
 								<li className="nav-item"><Link to="/task-list-update" className={`nav-link ${location.pathname === "/task-list-update" ? "active" : ""}`}>Task List Update</Link></li>
 								<li className="nav-item"><Link to="/percentage" className={`nav-link ${location.pathname === "/percentage" ? "active" : ""}`}>Percentage Calculation</Link></li>
 							</ul>
