@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, orderBy } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
 
 function Auto() {
@@ -11,13 +11,12 @@ function Auto() {
   const [taskCount, setTaskCount] = useState(0);
   const [totalTaskCount, setTotalTaskCount] = useState(0);
   const [taskHtml, setTaskHtml] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState([]);
   const [date, setDate] = useState("");
 
   const getEmployee = async () => {
     const querySnapshot = await getDocs(
-      collection(db, "employees"),
-      orderBy("create_at", "desc")
+      query(collection(db, "employees"), orderBy("name", "asc"))
     );
     const empdata = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -29,7 +28,7 @@ function Auto() {
   useEffect(() => {
     getEmployee();
   }, []);
-
+  console.log(name);
   const readCSVFile = () => {
     let count = 0;
     let totalTaskCount = 0;
@@ -47,32 +46,30 @@ function Auto() {
         const csvdata = event.target.result;
         const rowData = csvdata.split("\n");
 
-        let empNames = ["Rubyet Hossain","Tohir Raihan","Arjuda Anjum","Md. Nawshad Pervage"];
+        let empNames = name;
 
         let fullUpdatedTaskHtml = "";
         let empName = "";
 
-        for(let emp = 0; emp < empNames.length; emp++){
+        for (let emp = 0; emp < empNames.length; emp++) {
           let updatedTaskHtml = "";
           count = 0;
           empName = empNames[emp];
           for (let row = 1; row < rowData.length; row++) {
             const rowColData = rowData[row].split(",");
-  
+
             for (let col = 0; col < rowColData.length; col++) {
-              
               if (
                 rowColData[col] === empName &&
                 rowColData[col + 1] === formattedDate
               ) {
-                count = count+1;
-                updatedTaskHtml += `<li>${rowColData[col - 1].replace(
-                  "└",
-                  ""
-                )}
+                count = count + 1;
+                updatedTaskHtml += `<li>${rowColData[col - 1].replace("└", "")}
                 <ul>
                   <li>Backlog Ticket: N/A</li>
-                  <li>Estimated total hours: <span id="man-hour" value=${rowColData[col + 3]}>
+                  <li>Estimated total hours: <span id="man-hour" value=${
+                    rowColData[col + 3]
+                  }>
                   ${rowColData[col + 3]}</span>
                   </li>
                   <li>Previously done: 0%</li>
@@ -86,19 +83,17 @@ function Auto() {
           }
           totalTaskCount += count;
           fullUpdatedTaskHtml += `
-            <h6>
+            <h6 classname="p-0 m-0">
               @${empName} <b>(Total Tasks: ${count})</b>
             </h6>
-            <p>
-            </p>
             <ol>`;
           fullUpdatedTaskHtml += updatedTaskHtml;
           fullUpdatedTaskHtml += "</ol>";
         }
         setTotalTaskCount(totalTaskCount);
-        
 
-        document.querySelector("#taskDetails_1").innerHTML = fullUpdatedTaskHtml;
+        document.querySelector("#taskDetails_1").innerHTML =
+          fullUpdatedTaskHtml;
       };
     } else {
       alert("Please select a file.");
@@ -107,33 +102,36 @@ function Auto() {
     // setName("");
   };
 
-
   return (
     <>
       <section className="container mt-5">
         <div className="row">
           <div className="col-sm-6">
             <form action="">
-              <div className="mb-3">
-                <label htmlFor="exampleInputEmail1" className="form-label">
+              <div className="mb-3 form-check form-switch">
+                <h6 htmlFor="" className="">
                   Employee Name
-                </label>
-                <select
-                  name="name"
-                  id="name"
-                  value={name}
-                  className="form-control"
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                >
-                  <option value="">Select Employee</option>
-                  {empdata.map((data) => (
-                    <option value={data.name} key={data.id}>
-                      {data.name}
-                    </option>
-                  ))}
-                </select>
+                </h6>
+                {empdata.map((data) => (
+                  <div key={data.id} className="form-check form-switch">
+                    <input
+                    className="form-check-input"
+                      type="checkbox"
+                      id={`employee-${data.id}`}
+                      value={data.name}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setName((prev) => [...prev, e.target.value]);
+                        } else {
+                          setName((prev) =>
+                            prev.filter((name) => name !== e.target.value)
+                          );
+                        }
+                      }}
+                    />
+                    <label className="form-check-label" htmlFor={`employee-${data.id}`}>{data.name}</label>
+                  </div>
+                ))}
               </div>
               <div className="mb-3">
                 <label htmlFor="taskname" className="form-label">
@@ -179,9 +177,7 @@ function Auto() {
                 <h6>
                   Team PROJECT_NAME: <b>(Total Tasks: {totalTaskCount})</b>
                 </h6>
-                <p>
-
-                </p>
+                <p></p>
                 <span id="taskDetails_1" className="taskDetails_1"></span>
               </div>
             </div>
@@ -193,3 +189,4 @@ function Auto() {
 }
 
 export default Auto;
+
