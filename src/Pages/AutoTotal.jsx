@@ -13,6 +13,10 @@ function Auto() {
   const [taskHtml, setTaskHtml] = useState("");
   const [name, setName] = useState([]);
   const [date, setDate] = useState("");
+  const [assingmember, setAssingMember] = useState([]);
+  const [project, setProject] = useState([]);
+  const [member, setMember] = useState([]);
+  const [proj, setProj] = useState("");
 
   const getEmployee = async () => {
     const querySnapshot = await getDocs(
@@ -23,12 +27,41 @@ function Auto() {
       ...doc.data(),
     }));
     setEmpdata(empdata);
+
+    // const projectSnapshot = await getDocs( query(collection(db, "projects"), orderBy("name", "asc")));
+    // const projectdata = projectSnapshot.docs.map((doc) => ({
+    //   id: doc.id,
+    //   ...doc.data(),
+    // }));
+    // setProject(projectdata);
   };
+
+  const getAssignMember = async () => {
+    const assingInfoquerySnapshot = await getDocs(
+      collection(db, "assignmembers")
+    );
+    const assingInfo = assingInfoquerySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setAssingMember(assingInfo);
+    // assignMember(assingInfo);
+  };
+
+  // if setAssingMember has data then set name
+
+  // function assignMember(assingInfo) {
+  //   if (assingInfo.length > 0) {
+  //     const names = assingInfo.map((data) => data.projectName);
+  //     setProject(names);
+  //   }
+  // }
 
   useEffect(() => {
     getEmployee();
+    getAssignMember();
   }, []);
-  console.log(name);
+
   const readCSVFile = () => {
     let count = 0;
     let totalTaskCount = 0;
@@ -108,30 +141,64 @@ function Auto() {
         <div className="row">
           <div className="col-sm-6">
             <form action="">
-              <div className="mb-3 form-check form-switch">
+              <div className="mb-3">
+                <label htmlFor="project" className="form-label">
+                  Project Name
+                </label>
+                <select
+                  className="form-select"
+                  name="project"
+                  id="project"
+                  value={proj}
+                  onChange={(e) => {
+                    setProj(e.target.value);
+                    const filtered = assingmember.filter(
+                      (member) => member.projectName === e.target.value
+                    );
+                    setMember(filtered);
+                  }}
+                >
+                  <option value="">Select Project</option>
+                  {assingmember.map((data, item) => (
+                    <option value={data.projectName} key={item}>
+                      {data.projectName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-3">
                 <h6 htmlFor="" className="">
                   Employee Name
                 </h6>
-                {empdata.map((data) => (
-                  <div key={data.id} className="form-check form-switch">
-                    <input
-                    className="form-check-input"
-                      type="checkbox"
-                      id={`employee-${data.id}`}
-                      value={data.name}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setName((prev) => [...prev, e.target.value]);
-                        } else {
-                          setName((prev) =>
-                            prev.filter((name) => name !== e.target.value)
-                          );
-                        }
-                      }}
-                    />
-                    <label className="form-check-label" htmlFor={`employee-${data.id}`}>{data.name}</label>
+                {member.map((data, item) =>
+                  <div key={item}>
+                    {data.members.map((member) => (
+                    <div key={member.id} className="form-check form-switch">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id={`employee-${member.id}`}
+                        value={member.name}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setName((prev) => [...prev, e.target.value]);
+                          } else {
+                            setName((prev) =>
+                              prev.filter((name) => name !== e.target.value)
+                            );
+                          }
+                        }}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`employee-${member.id}`}
+                      >
+                        {member.name}
+                      </label>
+                    </div>
+                  ))}
                   </div>
-                ))}
+                )}
               </div>
               <div className="mb-3">
                 <label htmlFor="taskname" className="form-label">
@@ -175,7 +242,7 @@ function Auto() {
               <div className="card-body">
                 <h2>Task Details</h2>
                 <h6>
-                  Team PROJECT_NAME: <b>(Total Tasks: {totalTaskCount})</b>
+                  Team {proj}: <b>(Total Tasks: {totalTaskCount})</b>
                 </h6>
                 <p></p>
                 <span id="taskDetails_1" className="taskDetails_1"></span>
@@ -189,4 +256,3 @@ function Auto() {
 }
 
 export default Auto;
-

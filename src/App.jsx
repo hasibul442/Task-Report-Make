@@ -16,6 +16,7 @@ import Login from './Pages/Auth/Login'
 import SingUp from './Pages/Auth/SingUp'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react'
+import AssignMember from './Pages/Project/AssignMember'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +52,7 @@ function App() {
           <Route path='/percentage' element={<><NavBar isVisible={true} /><PercentageCalculation /></>} />
 
           <Route path='/project' element={<><NavBar isVisible={true} /><ProjectList /></>} />
+          <Route path='/project/member/assign' element={<><NavBar isVisible={true} /><AssignMember /></>} />
           <Route path='/report_config' element={<><NavBar isVisible={true} /><ReportConfig /></>} />
           <Route path='/report_list' element={<><NavBar isVisible={true} /><ReportConfigList /></>} />
 

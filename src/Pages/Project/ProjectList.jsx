@@ -15,6 +15,7 @@ function ProjectList() {
   const [project, setProject] = useState("");
   const [projectdata, setProjectdata] = useState([]);
   let project_id;
+
   const handleInputChange = (e) => {
     setProject(e.target.value);
   };
@@ -23,7 +24,6 @@ function ProjectList() {
     e.preventDefault();
     try {
       await addDoc(collection(db, "projects"), {
-        // projectId: project_id + 1,
         name: project,
         create_at: new Date(),
       });
@@ -96,7 +96,7 @@ function ProjectList() {
 
                     <div className="col-sm-6">
                       <h5 className="">Project List</h5>
-                      <div className="table-responsive">
+                      <div className="">
                         <table className="table">
                           <thead>
                             <tr>
@@ -106,7 +106,6 @@ function ProjectList() {
                             </tr>
                           </thead>
                           <tbody>
-                            {" "}
                             {projectdata.map((project, index) => (
                               <tr key={project.id}>
                                 <td>{index + 1}</td>
@@ -122,7 +121,7 @@ function ProjectList() {
                                   </button>
                                 </td>
                               </tr>
-                            ))}{" "}
+                            ))}
                           </tbody>
                         </table>
                       </div>
