@@ -10,7 +10,7 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { FaCopy, FaEdit, FaTrash } from "react-icons/fa";
+import { FaCopy, FaDownload, FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
@@ -165,19 +165,15 @@ function NoteCreate() {
     });
   };
 
-
-  const testData = "06220596000E3C010EFF26009D7DD10D0A545A00282424040602070000064198490790042513070510280000000008AAC0000001A704B70000009E9DA70D0A545A00362424040602070000064198490790042513070510280C00000008AAC0000001A704B7000E00010B06220597000E2700AFFF2B009F8AD00D0A545A00282424040602070000064198490790042513070510281800000008AAC0000001A804B7000000A04A530D0A545A00282424040602070000064198490790042513070510282300000008AAC0000001A704B7000000A1B70E0D0A545A00362424040602070000064198490790042513070510282F00000008AAC0000001A704B7000E00010B06220596000E3C010EFF2500A287870D0A545A00282424040602070000064198490790042513070510283A00000008AAC0000001A804B7000000A3E1AB0D0A545A00362424040602070000064198490790042513070510290A00000008AAC0000001A704B7000E00010B06220597000E2700C3FF2B00A4FF600D0A545A00282424040602070000064198490790042513070510291600000008AAC0000001A704B7000000A5D6590D0A545A00282424040602070000064198490790042513070510292100000008AAC0000001A804B7000000A6E9400D0A545A00362424040602070000064198490790042513070510292D00000008AAC0000001A704B7000E00010B"
-  const splitData = ["06220596", "06220597"]
-  //Now make a function that splite testData based on splitedata array and store in another array as well as the testData object if splitedata array item has multiple items then it will be splited into multiple items and store in array
- 
-
-  const splitedData = splitData.map((data) => {
-    return {
-     index :  data + testData.split(data)[1],
-    };
-   }
-   );
-   console.log(splitedData)
+  const handelToDownload = (id) => {
+    const note = notesdata.find((note) => note.id === id);
+    const element = document.createElement("a");
+    const file = new Blob([note.note], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = note.name;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
 
   return (
     <>
@@ -259,6 +255,12 @@ function NoteCreate() {
                         <DateDiffer createAt={note.create_at} />
                       </div>
                       <div>
+                        <button
+                          className="btn btn-outline-primary btn-sm mx-1"
+                          onClick={() => handelToDownload(note.id)}
+                        >
+                          <FaDownload />
+                        </button>
                         <button
                           className="btn btn-outline-info btn-sm mx-1"
                           onClick={() => handleCopyToClipboard(note.id)}
