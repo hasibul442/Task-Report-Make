@@ -10,11 +10,11 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { FaCopy, FaDownload, FaEdit, FaTrash } from "react-icons/fa";
+import { FaCopy, FaDownload, FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
-import { Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 function NoteCreate() {
   const [fileData, setFileData] = useState("");
   const [filename, setFilename] = useState("");
@@ -133,7 +133,6 @@ function NoteCreate() {
     setIsModalOpen(false);
   };
 
-
   const editNote = async (id) => {
     Swal.fire({
       icon: "info",
@@ -173,6 +172,18 @@ function NoteCreate() {
     element.download = note.name;
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
+  };
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalContent, setModalContent] = useState([]);
+
+  const handleReadMore = (note) => {
+    setModalContent(note);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
   };
 
   return (
@@ -237,6 +248,10 @@ function NoteCreate() {
               </div>
             </div>
           </div>
+          <hr />
+          <h3 className="text-center">Notes</h3>
+          <hr />
+
           <Masonry columnsCount={4} gutter="30px">
             {filteredNotes.map((note, index) => (
               <div className="notes" key={index}>
@@ -247,7 +262,22 @@ function NoteCreate() {
                       {note.lastModified}
                     </p>
 
-                    <p style={{ whiteSpace: "pre-line" }}>{note.note}</p>
+                    {/* <p style={{ whiteSpace: "pre-line" }}>{note.note}</p> */}
+                    <div>
+                      <p style={{ whiteSpace: "pre-line" }}>
+                        {note.note.length > 300
+                          ? note.note.substring(0, 300) + "..."
+                          : note.note}
+                      </p>
+                      {note.note.length > 300 && (
+                        <button
+                          className="btn text-primary"
+                          onClick={() => handleReadMore(note)}
+                        >
+                          Read More
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <div className="card-footer">
                     <div className="d-flex justify-content-between">
@@ -287,11 +317,45 @@ function NoteCreate() {
             ))}
           </Masonry>
         </section>
+
+        <section>
+          <Modal show={modalIsOpen} onHide={closeModal} size="xl">
+            <Modal.Header closeButton>
+              <Modal.Title>{modalContent.name}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body size="lg">
+              <p style={{ whiteSpace: "pre-line" }}>{modalContent.note}</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <button
+                className="btn btn-outline-primary btn-sm mx-1"
+                onClick={() => handelToDownload(modalContent.id)}
+              >
+                <FaDownload />
+              </button>
+              <button
+                className="btn btn-outline-info btn-sm mx-1"
+                onClick={() => handleCopyToClipboard(modalContent.id)}
+              >
+                <FaCopy />
+              </button>
+              <button
+                className="btn btn-outline-danger btn-sm mx-1"
+                onClick={() => deleteNote(modalContent.id)}
+              >
+                <FaTrash />
+              </button>
+              <Button variant="secondary" onClick={closeModal}>
+                <FaTimes />
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </section>
       </div>
 
       {/* Edit Modal */}
-            <Modal isOpen={isModalOpen} onRequestClose={handleCloseModal}>
-        <form 
+      <Modal isOpen={isModalOpen} onRequestClose={handleCloseModal}>
+        <form
         // onSubmit={handleSubmit}
         >
           <label htmlFor="title">Title:</label>
@@ -314,6 +378,8 @@ function NoteCreate() {
           <button type="submit">Save</button>
         </form>
       </Modal>
+
+      {/* Details Modal */}
     </>
   );
 }
