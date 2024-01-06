@@ -1,113 +1,102 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import {
   collection,
   addDoc,
   getDocs,
   deleteDoc,
   doc,
-  orderBy
+  orderBy,
 } from "firebase/firestore";
-import {db} from "../firebase";
-import { useState } from 'react';
-
+import { db } from "../firebase";
+import { useState } from "react";
 
 function PercentageCalculation() {
-    useEffect(() => {
-        window.scrollTo(0, 0);
-      }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
-      const [projectdata, setProjectdata] = useState([]);
-      const getProjectReportData = async () => {
-        const querySnapshot = await getDocs(
-          collection(db, "report_config")
-        );
-        const projectdata = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setProjectdata(projectdata);
-      }
-      
-      // const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [totalTask, setTotalTask] = useState();
+  const [totalComplete, setTotalComplete] = useState();
+  const [open, setOpen] = useState();
+  const [inProgress, setInProgress] = useState();
+  const [resolved, setResolved] = useState();
+  const [percentage, setPercentage] = useState();
 
-      // useEffect(() => {
-      //   function onlineHandler() {
-      //     checkInternetConnectivity().then((isConnected) => {
-      //       setIsOnline(isConnected);
-      //       console.log("Internet connectivity: " + isConnected);
-      //     });
-      //   }
-    
-      //   function offlineHandler() {
-      //       setIsOnline(false);
-      //   }
-    
-      //   window.addEventListener("online", onlineHandler);
-      //   window.addEventListener("offline", offlineHandler);
-  
-    
-      //   return () => {
-      //       window.removeEventListener("online", onlineHandler);
-      //       window.removeEventListener("offline", offlineHandler);
-      //   };
-      // }, []);
 
-      // async function checkInternetConnectivity() {
-      //   try {
-      //     console.log("Checking internet connectivity...");
-      //     const response = await fetch("https://www.google.com", { mode: "no-cors" });
-      //     return response.status >= 200 && response.status < 300;
-      //   } catch (error) {
-      //     return false;
-      //   }
-      // }
+  const calculatePercentage = () => {
+    let total = parseInt(totalTask);
+    let complete = parseInt(totalComplete);
+    // let open = total - complete;
+    // let inProgress = complete - resolved;
+    // let resolved = complete - inProgress;
 
-      const [status, setStatus] = useState(() => {
-        if (navigator.onLine) {
-          console.log("Connected to network.");
-          return true;
-        } else {
-          return false;
-        }
-      });
-    
-      useEffect(() => {
-        window.ononline = (e) => {
-          console.log("Connected to network.");
-          setStatus(true);
-        };
-    
-        window.onoffline = (e) => {
-          console.log("Network connection lost.");
-          setStatus(false);
-        };
-      }, [status]);
+    // setOpen(open);
+    // setInProgress(inProgress);
+    // setResolved(resolved);
+    setPercentage(((complete / total) * 100).toFixed(2));
+  }
   return (
     <>
-      <section className='mt-5'>
+      <section className="mt-5">
         <div className="container">
           <div className="row">
             <div className="col-sm-4">
               <div className="card shadow border-0">
                 <div className="card-body">
                   <form action="">
-
                     <div className="mb-3">
-                      <label htmlFor="exampleInputEmail1" className="form-label">Project Name</label>
-                      <input type="text" />
+                      <label
+                        htmlFor="exampleInputEmail1"
+                        className="form-label"
+                      >
+                        Total Task
+                      </label>
+                      <input type="number" min={0} className="form-control" 
+                        name="total_task" id="total_task"
+                        value={totalTask}
+                        onChange={(e) => setTotalTask(e.target.value)}
+                      />
+                      
                     </div>
+                    <div className="mb-3">
+                      <label
+                        htmlFor="exampleInputEmail1"
+                        className="form-label"
+                      >
+                        Completed Task
+                      </label>
+                      <input type="number" min={0} className="form-control" 
+                        name="total_completed" id="total_completed"
+                        value={totalComplete}
+                        onChange={(e) => setTotalComplete(e.target.value)}
+                      />
+                      
+                    </div>
+
+                    <button
+                type="button"
+                className="btn btn-primary"
+                onClick={calculatePercentage}
+              >
+                Submit
+              </button>
                   </form>
+                </div>
+              </div>
+            </div>
 
-
+            <div className="col-sm-8">
+              <div className="card">
+                <div className="card-body">
+                  <h6>Progress Rate : {percentage}%</h6>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-
     </>
-  )
+  );
 }
 
-export default PercentageCalculation
+export default PercentageCalculation;

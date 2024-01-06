@@ -36,17 +36,8 @@ function Auto() {
       ...doc.data(),
     }));
     setAssingMember(assingInfo);
-    // assignMember(assingInfo);
   };
 
-  // if setAssingMember has data then set name
-
-  // function assignMember(assingInfo) {
-  //   if (assingInfo.length > 0) {
-  //     const names = assingInfo.map((data) => data.projectName);
-  //     setProject(names);
-  //   }
-  // }
 
   useEffect(() => {
     getEmployee();
