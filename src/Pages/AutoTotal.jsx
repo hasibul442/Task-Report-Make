@@ -8,13 +8,10 @@ function Auto() {
   }, []);
 
   const [empdata, setEmpdata] = useState([]);
-  const [taskCount, setTaskCount] = useState(0);
   const [totalTaskCount, setTotalTaskCount] = useState(0);
-  const [taskHtml, setTaskHtml] = useState("");
   const [name, setName] = useState([]);
   const [date, setDate] = useState("");
   const [assingmember, setAssingMember] = useState([]);
-  const [project, setProject] = useState([]);
   const [member, setMember] = useState([]);
   const [proj, setProj] = useState("");
 
@@ -28,12 +25,6 @@ function Auto() {
     }));
     setEmpdata(empdata);
 
-    // const projectSnapshot = await getDocs( query(collection(db, "projects"), orderBy("name", "asc")));
-    // const projectdata = projectSnapshot.docs.map((doc) => ({
-    //   id: doc.id,
-    //   ...doc.data(),
-    // }));
-    // setProject(projectdata);
   };
 
   const getAssignMember = async () => {

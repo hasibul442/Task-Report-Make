@@ -16,6 +16,7 @@ import Login from './Pages/Auth/Login'
 import SingUp from './Pages/Auth/SingUp'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react'
+import AssignMemberList from './Pages/AssignMemberList'
 import AssignMember from './Pages/Project/AssignMember'
 
 function App() {
@@ -50,16 +51,18 @@ function App() {
           <Route path='/manual-task-report' element={<><NavBar isVisible={true} /><Manual /></>} />
           <Route path='/task-list-update' element={<><NavBar isVisible={true} /><ListUpdate /></>} />
           <Route path='/percentage' element={<><NavBar isVisible={true} /><PercentageCalculation /></>} />
+          <Route path='/assign/Member/list' element={<><NavBar isVisible={true} /><AssignMemberList /></>} />
 
-          <Route path='/project' element={<><NavBar isVisible={true} /><ProjectList /></>} />
-          <Route path='/project/member/assign' element={<><NavBar isVisible={true} /><AssignMember /></>} />
-          <Route path='/report_config' element={<><NavBar isVisible={true} /><ReportConfig /></>} />
-          <Route path='/report_list' element={<><NavBar isVisible={true} /><ReportConfigList /></>} />
-
+          {/* Auth Route */}
           <Route path="/login" element={<><NavBar isVisible={false} /><Login /></>} />
           <Route path="/signup" element={<><NavBar isVisible={false} /><SingUp /></>} />
 
           {/* Private Route */}
+          <Route path='/project' element={<><PrivateRoute><NavBar isVisible={true} /><ProjectList /></PrivateRoute></>} />
+          <Route path='/project/member/assign' element={<><PrivateRoute><NavBar isVisible={true} /><AssignMember /></PrivateRoute></>} />
+          <Route path='/report_config' element={<><PrivateRoute><NavBar isVisible={true} /><ReportConfig /></PrivateRoute></>} />
+          <Route path='/report_list' element={<><PrivateRoute><NavBar isVisible={true} /><ReportConfigList /></PrivateRoute></>} />
+
           <Route path='/note' element={<PrivateRoute><NavBar isVisible={true} /><NoteCreate /></PrivateRoute>} />
           <Route path='/employee' element={<PrivateRoute><NavBar isVisible={true} /><Employee /></PrivateRoute>} />
         </Routes>

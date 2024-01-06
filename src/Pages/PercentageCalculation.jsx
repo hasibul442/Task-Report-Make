@@ -90,6 +90,13 @@ function PercentageCalculation() {
             <div className="col-sm-4">
               <div className="card shadow border-0">
                 <div className="card-body">
+                  <form action="">
+
+                    <div className="mb-3">
+                      <label htmlFor="exampleInputEmail1" className="form-label">Project Name</label>
+                      <input type="text" />
+                    </div>
+                  </form>
 
 
                 </div>
@@ -99,19 +106,6 @@ function PercentageCalculation() {
         </div>
       </section>
 
-      <div className='container mt-5'>
-      		{status ? (
-        		<p>You are online.</p>
-      		) : (
-        		<p>You are offline. Please check your internet connection.</p>
-      		)}
-
-          <button
-            className={`btn btn-primary ${status ? "" : "disabled"}`}
-          >
-Button Test
-          </button>
-    	</div>
     </>
   )
 }

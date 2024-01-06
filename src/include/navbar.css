@@ -22,7 +22,7 @@
 }
 
 .ftco-navbar-light {
-  background: #1089ff !important;
+  background: #7E2553 !important;
   z-index: 3;
   padding: 0;
 }
@@ -53,21 +53,22 @@
   }
 }
 .ftco-navbar-light .navbar-nav > .nav-item > .nav-link {
-  font-size: 11px;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  font-size: 12px;
+  text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   padding-left: 20px;
   padding-right: 20px;
   font-weight: 500;
   color: #fff;
   text-transform: uppercase;
-  letter-spacing: 2px;
   opacity: 1 !important;
 }
 .ftco-navbar-light .navbar-nav > .nav-item > .nav-link:hover {
-  color: #fff;
+  color: #000;
+  background-color: #EEF5FF !important;
 }
-@media (max-width: 991.98px) {
+/* @media (max-width: 991.98px) {
   .ftco-navbar-light .navbar-nav > .nav-item > .nav-link {
     padding-left: 0;
     padding-right: 0;
@@ -78,17 +79,13 @@
   .ftco-navbar-light .navbar-nav > .nav-item > .nav-link:hover {
     color: #fff;
   }
-}
+} */
 .ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
   border: none;
-  background: #fff;
-  -webkit-box-shadow: 0px 10px 34px -20px rgba(0, 0, 0, 0.41);
-  -moz-box-shadow: 0px 10px 34px -20px rgba(0, 0, 0, 0.41);
-  box-shadow: 0px 10px 34px -20px rgba(0, 0, 0, 0.41);
-  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0px 10px 34px -20px rgba(0, 0, 0, 0.815);
 }
 .ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu .dropdown-item {
-  font-size: 12px;
   color: #000;
 }
 .ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu .dropdown-item:hover,
@@ -96,18 +93,7 @@
   background: #1089ff;
   color: #fff;
 }
-@media (max-width: 991.98px) {
-  .ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
-    background: #000;
-    border-left: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-  .ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu .dropdown-item {
-    color: rgba(255, 255, 255, 0.8);
-  }
-}
+
 .ftco-navbar-light .navbar-nav > .nav-item.cta > a {
   color: #fff;
   background: #ff7315;
@@ -145,6 +131,5 @@
 
 .nav-link.active{
   color: #000 !important;
-  background-color: chartreuse !important;
-  font-weight: bold !important;
+  background-color: #EEF5FF !important;
 }

@@ -11,17 +11,18 @@ function Login() {
   const navigate = useNavigate()
   let location = useLocation();
 
-  // console.log(location.state.from.pathname)
   const login = async (event) => {
     event.preventDefault();
     try {
       const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-      navigate(location.state.from.pathname );
+      let path = location.state?.from?.pathname || '/'; // default path is '/'
+      navigate(path);
+
     } catch (error) {
       let errorMessage;
       if (error.code === 'auth/invalid-login-credentials') {
@@ -56,7 +57,8 @@ function Login() {
             </button>
             <div className="register-link">
               <p>
-                Dont't have an account? <Link to="/signup">Register</Link>
+                {/* Dont't have an account? <Link to="/signup">Register</Link> */}
+                Dont't have an account? <Link to="/">You Can't Signup</Link>
               </p>
             </div>
           </form>
