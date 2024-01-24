@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./navbar.css";
 import { Link, useLocation } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
@@ -9,6 +9,26 @@ function NavBar({ isVisible }) {
   if (!isVisible) {
     return null;
   }
+
+  useEffect(() => {
+    let timer;
+    const events = ['load', 'mousemove', 'mousedown', 'click', 'scroll', 'keypress'];
+
+    const resetTimer = () => {
+      clearTimeout(timer);
+      timer = setTimeout(handleLogout, 30 * 60 * 1000); // 30 minutes
+    };
+
+    for (let i in events) {
+      window.addEventListener(events[i], resetTimer);
+    }
+
+    return () => {
+      for (let i in events) {
+        window.removeEventListener(events[i], resetTimer);
+      }
+    };
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -110,6 +130,18 @@ function NavBar({ isVisible }) {
                     }`}
                   >
                     Manual Task <br />Report
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    to="/task/summery"
+                    className={`nav-link ${
+                      location.pathname === "/task/summery"
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    Task <br />Summery
                   </Link>
                 </li>
                 <li className="nav-item">
