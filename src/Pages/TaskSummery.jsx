@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import TypeIt from "typeit-react";
-import { Spinner } from "react-bootstrap";
+import { Badge, Spinner } from "react-bootstrap";
+import packages from "../../package.json";
 
 function TaskSummery() {
   const [input, setInput] = useState();
@@ -40,13 +41,6 @@ function TaskSummery() {
       });
   }
 
-  // useEffect(() => {
-  //   new TypeIt("#simpleUsage", {
-  //     strings: output,
-  //     speed: 50,
-  //     waitUntilVisible: true,
-  //   }).go();
-  // }, [output]);
   return (
     <>
       <div className="container mt-5">
@@ -57,7 +51,7 @@ function TaskSummery() {
                 <form action="">
                   <div className="mb-3">
                     <h6 htmlFor="" className="form-label">
-                      Enter Your Task List
+                      Enter Your Task List <Badge bg="primary">beta</Badge>
                     </h6>
                     <textarea
                       type="text"
@@ -96,7 +90,7 @@ function TaskSummery() {
                   output && (
                     <TypeIt
                       id="simpleUsage"
-                      options={{ speed: 50, waitUntilVisible: true }}
+                      options={{ speed: 30, waitUntilVisible: true }}
                     >
                       {output}
                     </TypeIt>

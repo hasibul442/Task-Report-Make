@@ -19,6 +19,7 @@ import { useEffect } from 'react'
 import AssignMemberList from './Pages/AssignMemberList'
 import AssignMember from './Pages/Project/AssignMember'
 import TaskSummery from './Pages/TaskSummery'
+import Footer from './include/Footer'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -70,7 +71,10 @@ function App() {
         </Routes>
       </Router>
     </main>
-      </>
+    <footer className='footer-section'>
+      <Footer />
+    </footer>
+    </>
   )
 }
 

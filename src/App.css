@@ -2,3 +2,29 @@
   width: 100%;
 }
 
+body {
+  min-height: 100vh;
+  position: relative;
+}
+main{
+  height: 92vh;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+}
+main::-webkit-scrollbar {
+  display: none;
+}
+footer{ 
+  position: absolute;
+  right: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #000068;
+  color: #fff;
+  height: 8vh;
+}

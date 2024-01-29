@@ -1,7 +1,7 @@
 {
   "name": "adven-task",
   "private": true,
-  "version": "2.0.1",
+  "version": "2.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,7 @@
   "dependencies": {
     "bootstrap": "^5.3.2",
     "firebase": "^10.5.0",
-    "openai": "^4.24.2",
+    "openai": "^4.26.0",
     "react": "^18.2.0",
     "react-axios": "^2.0.6",
     "react-beautiful-dnd": "^13.1.1",
@@ -35,5 +35,10 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "vite": "^4.4.5"
-  }
+  },
+  "description": "URL:\r https://hasibul442.github.io/Task-Report-Make/",
+  "main": "vite.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
