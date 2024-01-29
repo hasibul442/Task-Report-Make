@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./login.css";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {Link, useLocation, useNavigate} from 'react-router-dom'

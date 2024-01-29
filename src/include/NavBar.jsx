@@ -13,11 +13,13 @@ function NavBar({ isVisible }) {
   useEffect(() => {
     let timer;
     const events = ['load', 'mousemove', 'mousedown', 'click', 'scroll', 'keypress'];
+    // const events = ['load', 'click', 'scroll', 'keypress'];
 
     const resetTimer = () => {
       clearTimeout(timer);
-      timer = setTimeout(handleLogout, 30 * 60 * 1000); // 30 minutes
+      timer = setTimeout(handleLogout, 1 * 60 * 1000); // 30 minutes
     };
+    
 
     for (let i in events) {
       window.addEventListener(events[i], resetTimer);
@@ -30,6 +32,9 @@ function NavBar({ isVisible }) {
     };
   }, []);
 
+  // if (!isVisible) {
+  //   return null;
+  // }
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -227,6 +232,7 @@ function NavBar({ isVisible }) {
         </div>
       </nav>
     </>
+
   );
 }
 

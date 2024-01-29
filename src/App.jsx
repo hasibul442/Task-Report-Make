@@ -18,6 +18,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect } from 'react'
 import AssignMemberList from './Pages/AssignMemberList'
 import AssignMember from './Pages/Project/AssignMember'
+import TaskSummery from './Pages/TaskSummery'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -52,6 +53,7 @@ function App() {
           <Route path='/task-list-update' element={<><NavBar isVisible={true} /><ListUpdate /></>} />
           <Route path='/percentage' element={<><NavBar isVisible={true} /><PercentageCalculation /></>} />
           <Route path='/assign/Member/list' element={<><NavBar isVisible={true} /><AssignMemberList /></>} />
+          <Route path='/task/summery' element={<><NavBar isVisible={true} /><TaskSummery /></>} />
 
           {/* Auth Route */}
           <Route path="/login" element={<><NavBar isVisible={false} /><Login /></>} />
