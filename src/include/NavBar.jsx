@@ -17,7 +17,7 @@ function NavBar({ isVisible }) {
 
     const resetTimer = () => {
       clearTimeout(timer);
-      timer = setTimeout(handleLogout, 1 * 60 * 1000); // 30 minutes
+      timer = setTimeout(handleLogout, 30 * 60 * 1000); // 30 minutes
     };
     
 
