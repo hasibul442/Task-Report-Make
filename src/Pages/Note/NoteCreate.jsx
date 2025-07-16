@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
 import { Button, Modal } from "react-bootstrap";
+import { getAuth } from "firebase/auth";
 function NoteCreate() {
   const [fileData, setFileData] = useState("");
   const [filename, setFilename] = useState("");
@@ -48,6 +49,8 @@ function NoteCreate() {
           name: filename,
           note: fileData,
           lastModified: lastModified,
+          added_by: getAuth().currentUser.email,
+          updated_by: getAuth().currentUser.email,
           create_at: new Date(),
         });
         window.location.reload();
@@ -311,6 +314,14 @@ function NoteCreate() {
                         </button>
                       </div>
                     </div>
+                    <div>
+                      <div className="text-secondary" style={{ fontSize: "10px" }}>
+                          Added by: {note.added_by}
+                        </div>
+                        <div className="text-secondary" style={{ fontSize: "10px" }}>
+                          Updated by: {note.updated_by}
+                        </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -324,7 +335,7 @@ function NoteCreate() {
               <Modal.Title>{modalContent.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body size="lg">
-              <p style={{ whiteSpace: "pre-line" }}>{modalContent.note}</p>
+              <pre style={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}>{modalContent.note}</pre>
             </Modal.Body>
             <Modal.Footer>
               <button
