@@ -1,0 +1,45 @@
+export function getLanguage(ext) {
+  const data = [
+    { ext: 'js', lang: 'javascript' },
+    { ext: 'jsx', lang: 'javascript' },
+    { ext: 'ts', lang: 'typescript' },
+    { ext: 'tsx', lang: 'typescript' },
+    { ext: 'html', lang: 'html' },
+    { ext: 'css', lang: 'css' },
+    { ext: 'less', lang: 'less' },
+    { ext: 'scss', lang: 'scss' },
+    { ext: 'json', lang: 'json' },
+    { ext: 'py', lang: 'python' },
+    { ext: 'java', lang: 'java' },
+    { ext: 'c', lang: 'c' },
+    { ext: 'cpp', lang: 'cpp' },
+    { ext: 'cs', lang: 'csharp' },
+    { ext: 'go', lang: 'go' },
+    { ext: 'php', lang: 'php' },
+    { ext: 'rb', lang: 'ruby' },
+    { ext: 'bat', lang: 'bat' },
+    { ext: 'sh', lang: 'bat' },
+    { ext: 'shell', lang: 'shell' },
+    { ext: 'dart', lang: 'dart' },
+    { ext: 'dockerfile', lang: 'dockerfile' },
+    { ext: 'ini', lang: 'ini' },
+    { ext: 'kts', lang: 'kotlin' },
+    { ext: 'md', lang: 'markdown' },
+    { ext: 'sql', lang: 'sql' },
+    { ext: 'ps1', lang: 'powershell' },
+    { ext: 'redis', lang: 'redis' },
+    { ext: 'yaml', lang: 'yaml' },
+    { ext: 'yml', lang: 'yaml' },
+    { ext: 'xml', lang: 'xml' },
+    { ext: 'vue', lang: 'vue' },
+    { ext: 'rs', lang: 'rust' },
+    { ext: 'swift', lang: 'swift' },
+    { ext: 'r', lang: 'r' },
+    { ext: 'groovy', lang: 'groovy' },
+    { ext: 'hbs', lang: 'handlebars' },
+    { ext: 'tex', lang: 'latex' }
+  ]
+
+    const found = data.find(item => item.ext === ext);
+    return found ? found.lang : 'markdown'; // Default to 'markdown' if not found
+}
