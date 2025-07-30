@@ -5,11 +5,13 @@ import { use } from 'react';
 import { useParams } from 'react-router-dom';
 import { db } from '../../../firebase';
 import { getLanguage, getOption } from '../../../Helper/Helper';
+import AppBar from './AppBar';
 
 function Details() {
 	const { id } = useParams();
 	const [note, setNote] = useState("");
 	const [lang, setLang] = useState("");
+	const [fileName, setFileName] = useState("");
 
 
 	const getNote = async () => {
@@ -17,10 +19,11 @@ function Details() {
 		const docSnap = await getDoc(docRef);
 		if (docSnap.exists()) {
 			setNote(docSnap.data().note);
-			const fileName = docSnap.data().name;
-			const fileExtension = fileName.split('.').pop();
+			const fileNames = docSnap.data().name;
+			const fileExtension = fileNames.split('.').pop();
 			const language = getLanguage(fileExtension);
 			setLang(language);
+			setFileName(fileNames);
 		} else {
 			// doc.data() will be undefined in this case
 			console.log("No such document!");
@@ -40,6 +43,8 @@ function Details() {
 						Edit
 					</a> */}
 				</div>
+
+				<AppBar fileName={fileName} />
 				<div style={{ height: '80vh', width: '100%' }} className='mb-2'>
 					<Editor
 						height="100%"
