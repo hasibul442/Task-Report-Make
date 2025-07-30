@@ -20,6 +20,7 @@ import AssignMemberList from './Pages/AssignMemberList'
 import AssignMember from './Pages/Project/AssignMember'
 import TaskSummery from './Pages/TaskSummery'
 import Footer from './include/Footer'
+import Details from './Pages/Note/Details/Details'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -67,6 +68,7 @@ function App() {
           <Route path='/report_list' element={<><PrivateRoute><NavBar isVisible={true} /><ReportConfigList /></PrivateRoute></>} />
 
           <Route path='/note' element={<PrivateRoute><NavBar isVisible={true} /><NoteCreate /></PrivateRoute>} />
+          <Route path='/note/details/:id' element={<PrivateRoute><NavBar isVisible={true} /><Details /></PrivateRoute>} />
           <Route path='/employee' element={<PrivateRoute><NavBar isVisible={true} /><Employee /></PrivateRoute>} />
         </Routes>
       </Router>
