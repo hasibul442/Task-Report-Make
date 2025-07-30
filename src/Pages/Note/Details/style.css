@@ -1,0 +1,16 @@
+.appbar {
+  background-color: #1e1e1e;
+  height: 40px;
+  color: #d4d4d4;
+  user-select: none;
+}
+
+.icon-hover {
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: color 0.2s;
+}
+
+.icon-hover:hover {
+  color: white;
+}
