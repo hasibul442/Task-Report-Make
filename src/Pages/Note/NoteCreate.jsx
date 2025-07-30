@@ -10,7 +10,7 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { FaCopy, FaDownload, FaEdit, FaTimes, FaTrash } from "react-icons/fa";
+import { FaCopy, FaDownload, FaEdit, FaEye, FaTimes, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
@@ -283,11 +283,8 @@ function NoteCreate() {
                     </div>
                   </div>
                   <div className="card-footer">
-                    <div className="d-flex justify-content-between">
-                      <div>
-                        <DateDiffer createAt={note.create_at} />
-                      </div>
-                      <div>
+                    <div className="row">
+                      <div className="col-sm-12">
                         <button
                           className="btn btn-outline-primary btn-sm mx-1"
                           onClick={() => handelToDownload(note.id)}
@@ -301,11 +298,17 @@ function NoteCreate() {
                           <FaCopy />
                         </button>
                         <button
-                          className="btn btn-outline-success btn-sm mx-1"
+                          className="btn btn-outline-warning btn-sm mx-1"
                           onClick={() => handleOpenModal(note)}
                         >
                           <FaEdit />
                         </button>
+                        <a
+                          className="btn btn-outline-success btn-sm mx-1"
+                          href={`/note/details/${note.id}`}
+                        >
+                          <FaEye />
+                        </a>
                         <button
                           className="btn btn-outline-danger btn-sm mx-1"
                           onClick={() => deleteNote(note.id)}
@@ -313,14 +316,20 @@ function NoteCreate() {
                           <FaTrash />
                         </button>
                       </div>
+
+                      <div className="col-sm-12">
+                        <div style={{ fontSize: "14px" }}>
+                          <DateDiffer createAt={note.create_at} />
+                        </div>
+                      </div>
                     </div>
                     <div>
                       <div className="text-secondary" style={{ fontSize: "10px" }}>
-                          Added by: {note.added_by}
-                        </div>
-                        <div className="text-secondary" style={{ fontSize: "10px" }}>
-                          Updated by: {note.updated_by}
-                        </div>
+                        Added by: {note.added_by}
+                      </div>
+                      <div className="text-secondary" style={{ fontSize: "10px" }}>
+                        Updated by: {note.updated_by}
+                      </div>
                     </div>
                   </div>
                 </div>
