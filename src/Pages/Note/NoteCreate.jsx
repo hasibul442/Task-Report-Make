@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   collection,
   addDoc,
@@ -10,12 +9,19 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { FaCopy, FaDownload, FaEdit, FaEye, FaTimes, FaTrash } from "react-icons/fa";
+import {
+  FaCopy,
+  FaDownload,
+  FaEdit,
+  FaTimes,
+  FaTrash,
+} from "react-icons/fa";
 import Swal from "sweetalert2";
 import Masonry from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
 import { Button, Modal } from "react-bootstrap";
 import { getAuth } from "firebase/auth";
+import { getExtensionList } from "../../Helper/Helper";
 function NoteCreate() {
   const [fileData, setFileData] = useState("");
   const [filename, setFilename] = useState("");
@@ -35,6 +41,9 @@ function NoteCreate() {
 
   //Add Data to Firebase
   const addNote = async (e) => {
+    e.preventDefault();
+    const supportedExtensions = getExtensionList();
+
     if (fileData === "") {
       Swal.fire({
         icon: "error",
@@ -42,8 +51,13 @@ function NoteCreate() {
         showConfirmButton: false,
         timer: 1500,
       });
+    } else if (!supportedExtensions.includes(filename.split('.').pop().toLowerCase())) {
+      Swal.fire({
+        icon: "error",
+        title: "Unsupported file type",
+        text: `Please upload a file with one of the following extensions: ${supportedExtensions.join(", ")}`,
+      });
     } else {
-      e.preventDefault();
       try {
         await addDoc(collection(db, "notes"), {
           name: filename,
@@ -52,6 +66,7 @@ function NoteCreate() {
           added_by: getAuth().currentUser.email,
           updated_by: getAuth().currentUser.email,
           create_at: new Date(),
+          updated_at: new Date(),
         });
         window.location.reload();
       } catch (e) {
@@ -136,26 +151,6 @@ function NoteCreate() {
     setIsModalOpen(false);
   };
 
-  const editNote = async (id) => {
-    Swal.fire({
-      icon: "info",
-      title: "This Function is Under Upgradation",
-      showConfirmButton: true,
-    });
-    //   try {
-    //     const docRef = doc(db, "notes", id);
-    //     const docSnap = await getDoc(docRef);
-    //     if (docSnap.exists()) {
-    //       console.log("Document data:", docSnap.data());
-    //     } else {
-    //       // doc.data() will be undefined in this case
-    //       console.log("No such document!");
-    //     }
-    //   } catch (e) {
-    //     console.error("Error adding document: ", e);
-    //   }
-  };
-
   const handleCopyToClipboard = (id) => {
     const note = notesdata.find((note) => note.id === id);
     navigator.clipboard.writeText(note.note);
@@ -206,6 +201,7 @@ function NoteCreate() {
                       className="form-control"
                       id="file"
                       onChange={handleFileChange}
+                      accept=".js,.jsx,.ts,.tsx,.html,.css,.less,.scss,.json,.py,.java,.c,.cpp,.cs,.go,.php,.rb,.bat,.sh,.shell,.dart,.dockerfile,.ini,.kts,.md,.sql,.ps1,.redis,.yaml,.yml,.xml,.vue,.rs,.swift,.r,.groovy,.hbs,.tex"
                       required
                     />
                   </div>
@@ -297,17 +293,17 @@ function NoteCreate() {
                         >
                           <FaCopy />
                         </button>
-                        <button
+                        {/* <button
                           className="btn btn-outline-warning btn-sm mx-1"
                           onClick={() => handleOpenModal(note)}
                         >
                           <FaEdit />
-                        </button>
+                        </button> */}
                         <a
                           className="btn btn-outline-success btn-sm mx-1"
                           href={`/note/details/${note.id}`}
                         >
-                          <FaEye />
+                          <FaEdit />
                         </a>
                         <button
                           className="btn btn-outline-danger btn-sm mx-1"
@@ -319,15 +315,21 @@ function NoteCreate() {
 
                       <div className="col-sm-12">
                         <div style={{ fontSize: "14px" }}>
-                          <DateDiffer createAt={note.create_at} />
+                          <DateDiffer createAt={note?.create_at} />
                         </div>
                       </div>
                     </div>
                     <div>
-                      <div className="text-secondary" style={{ fontSize: "10px" }}>
+                      <div
+                        className="text-secondary"
+                        style={{ fontSize: "10px" }}
+                      >
                         Added by: {note.added_by}
                       </div>
-                      <div className="text-secondary" style={{ fontSize: "10px" }}>
+                      <div
+                        className="text-secondary"
+                        style={{ fontSize: "10px" }}
+                      >
                         Updated by: {note.updated_by}
                       </div>
                     </div>
@@ -344,7 +346,9 @@ function NoteCreate() {
               <Modal.Title>{modalContent.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body size="lg">
-              <pre style={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}>{modalContent.note}</pre>
+              <pre style={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
+                {modalContent.note}
+              </pre>
             </Modal.Body>
             <Modal.Footer>
               <button
