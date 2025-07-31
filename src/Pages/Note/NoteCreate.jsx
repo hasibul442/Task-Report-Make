@@ -9,15 +9,9 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import {
-  FaCopy,
-  FaDownload,
-  FaEdit,
-  FaTimes,
-  FaTrash,
-} from "react-icons/fa";
+import { FaCopy, FaDownload, FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
-import Masonry from "react-responsive-masonry";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import DateDiffer from "../Components/DateDiffer";
 import { Button, Modal } from "react-bootstrap";
 import { getAuth } from "firebase/auth";
@@ -51,11 +45,15 @@ function NoteCreate() {
         showConfirmButton: false,
         timer: 1500,
       });
-    } else if (!supportedExtensions.includes(filename.split('.').pop().toLowerCase())) {
+    } else if (
+      !supportedExtensions.includes(filename.split(".").pop().toLowerCase())
+    ) {
       Swal.fire({
         icon: "error",
         title: "Unsupported file type",
-        text: `Please upload a file with one of the following extensions: ${supportedExtensions.join(", ")}`,
+        text: `Please upload a file with one of the following extensions: ${supportedExtensions.join(
+          ", "
+        )}`,
       });
     } else {
       try {
@@ -189,156 +187,177 @@ function NoteCreate() {
       <div className="container-fluid mt-5">
         <div className="row">
           <div className="col-sm-4">
-            <div className="card border-0 shadow">
-              <div className="card-body">
-                <form action="">
-                  <div className="mb-3">
-                    <label htmlFor="file" className="form-label">
-                      Please Insert File
-                    </label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      id="file"
-                      onChange={handleFileChange}
-                      accept=".js,.jsx,.ts,.tsx,.html,.css,.less,.scss,.json,.py,.java,.c,.cpp,.cs,.go,.php,.rb,.bat,.sh,.shell,.dart,.dockerfile,.ini,.kts,.md,.sql,.ps1,.redis,.yaml,.yml,.xml,.vue,.rs,.swift,.r,.groovy,.hbs,.tex"
-                      required
-                    />
-                  </div>
+            <div
+              style={{
+                position: "sticky",
+                top: 20,
+                zIndex: 100,
+                background: "#fff",
+              }}
+            >
+              <div className="">
+                <div className="card border-0 shadow">
+                  <div className="card-body">
+                    <form action="">
+                      <div className="mb-3">
+                        <label htmlFor="file" className="form-label">
+                          Please Insert File
+                        </label>
+                        <input
+                          type="file"
+                          className="form-control"
+                          id="file"
+                          onChange={handleFileChange}
+                          accept=".js,.jsx,.ts,.tsx,.html,.css,.less,.scss,.json,.py,.java,.c,.cpp,.cs,.go,.php,.rb,.bat,.sh,.shell,.dart,.dockerfile,.ini,.kts,.md,.sql,.ps1,.redis,.yaml,.yml,.xml,.vue,.rs,.swift,.r,.groovy,.hbs,.tex"
+                          required
+                        />
+                      </div>
 
-                  {/* Add Submit button */}
-                  <button
-                    type="submit"
-                    className="btn btn-outline-success"
-                    onClick={addNote}
-                  >
-                    Upload
-                  </button>
-                </form>
+                      {/* Add Submit button */}
+                      <button
+                        type="submit"
+                        className="btn btn-outline-success"
+                        onClick={addNote}
+                      >
+                        Upload
+                      </button>
+                    </form>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="col-sm-8">
-            <div>
-              <div
-                className="card border-0 shadow"
-                style={{ height: "150px", overflowY: "scroll" }}
-              >
-                <div className="card-body">
-                  <h6>{filename}</h6>
-                  <p style={{ whiteSpace: "pre-line" }}>{fileData}</p>
+              <div className="mt-3">
+                <div>
+                  <div
+                    className="card border-0 shadow"
+                    style={{
+                      minHeight: "400px",
+                      maxHeight: "450px",
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <div className="card-body">
+                      <h6>{filename}</h6>
+                      <p style={{ whiteSpace: "pre-line" }}>{fileData}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <section className="my-5">
-          <div className="">
-            <div className="">
-              <div className="input-group mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <h3 className="text-center">Notes</h3>
-          <hr />
-
-          <Masonry columnsCount={4} gutter="30px">
-            {filteredNotes.map((note, index) => (
-              <div className="notes" key={index}>
-                <div className="card shadow border-0">
-                  <div className="card-body">
-                    <h6>{note.name}</h6>
-                    <p className="fw-bold text-info font-monospace">
-                      {note.lastModified}
-                    </p>
-
-                    {/* <p style={{ whiteSpace: "pre-line" }}>{note.note}</p> */}
-                    <div>
-                      <p style={{ whiteSpace: "pre-line" }}>
-                        {note.note.length > 300
-                          ? note.note.substring(0, 300) + "..."
-                          : note.note}
-                      </p>
-                      {note.note.length > 300 && (
-                        <button
-                          className="btn text-primary"
-                          onClick={() => handleReadMore(note)}
-                        >
-                          Read More
-                        </button>
-                      )}
-                    </div>
+          <div className="col-sm-8">
+            <section className="">
+              <div className="">
+                <div className="">
+                  <div className="input-group mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Search"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                   </div>
-                  <div className="card-footer">
-                    <div className="row">
-                      <div className="col-sm-12">
-                        <button
-                          className="btn btn-outline-primary btn-sm mx-1"
-                          onClick={() => handelToDownload(note.id)}
-                        >
-                          <FaDownload />
-                        </button>
-                        <button
-                          className="btn btn-outline-info btn-sm mx-1"
-                          onClick={() => handleCopyToClipboard(note.id)}
-                        >
-                          <FaCopy />
-                        </button>
-                        {/* <button
+                </div>
+              </div>
+              <hr />
+              <h3 className="text-center">Notes</h3>
+              <hr />
+              <ResponsiveMasonry
+                columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 2 }}
+                gutterBreakpoints={{ 350: "30px", 750: "30px", 900: "30px" }}
+              >
+                <Masonry gutter="20px">
+                  {filteredNotes.map((note, index) => (
+                    <div className="notes" key={index}>
+                      <div className="card shadow border-0">
+                        <div className="card-body">
+                          <h6>{note.name}</h6>
+                          <p className="fw-bold text-info font-monospace">
+                            {note.lastModified}
+                          </p>
+
+                          {/* <p style={{ whiteSpace: "pre-line" }}>{note.note}</p> */}
+                          <div>
+                            <p style={{ whiteSpace: "pre-line" }}>
+                              {note.note.length > 300
+                                ? note.note.substring(0, 300) + "..."
+                                : note.note}
+                            </p>
+                            {note.note.length > 300 && (
+                              <button
+                                className="btn text-primary"
+                                onClick={() => handleReadMore(note)}
+                              >
+                                Read More
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                        <div className="card-footer">
+                          <div className="row">
+                            <div className="col-sm-12">
+                              <button
+                                className="btn btn-outline-primary btn-sm mx-1"
+                                onClick={() => handelToDownload(note.id)}
+                              >
+                                <FaDownload />
+                              </button>
+                              <button
+                                className="btn btn-outline-info btn-sm mx-1"
+                                onClick={() => handleCopyToClipboard(note.id)}
+                              >
+                                <FaCopy />
+                              </button>
+                              {/* <button
                           className="btn btn-outline-warning btn-sm mx-1"
                           onClick={() => handleOpenModal(note)}
                         >
                           <FaEdit />
                         </button> */}
-                        <a
-                          className="btn btn-outline-success btn-sm mx-1"
-                          href={`/note/details/${note.id}`}
-                        >
-                          <FaEdit />
-                        </a>
-                        <button
-                          className="btn btn-outline-danger btn-sm mx-1"
-                          onClick={() => deleteNote(note.id)}
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
+                              <a
+                                className="btn btn-outline-success btn-sm mx-1"
+                                href={`/note/details/${note.id}`}
+                              >
+                                <FaEdit />
+                              </a>
+                              <button
+                                className="btn btn-outline-danger btn-sm mx-1"
+                                onClick={() => deleteNote(note.id)}
+                              >
+                                <FaTrash />
+                              </button>
+                            </div>
 
-                      <div className="col-sm-12">
-                        <div style={{ fontSize: "14px" }}>
-                          <DateDiffer createAt={note?.create_at} />
+                            <div className="col-sm-12">
+                              <div style={{ fontSize: "14px" }}>
+                                <DateDiffer createAt={note?.create_at} />
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <div
+                              className="text-secondary"
+                              style={{ fontSize: "10px" }}
+                            >
+                              Added by: {note.added_by}
+                            </div>
+                            <div
+                              className="text-secondary"
+                              style={{ fontSize: "10px" }}
+                            >
+                              Updated by: {note.updated_by}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div>
-                      <div
-                        className="text-secondary"
-                        style={{ fontSize: "10px" }}
-                      >
-                        Added by: {note.added_by}
-                      </div>
-                      <div
-                        className="text-secondary"
-                        style={{ fontSize: "10px" }}
-                      >
-                        Updated by: {note.updated_by}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </Masonry>
-        </section>
+                  ))}
+                </Masonry>
+              </ResponsiveMasonry>
+            </section>
+          </div>
+        </div>
 
         <section>
           <Modal show={modalIsOpen} onHide={closeModal} size="xl">
